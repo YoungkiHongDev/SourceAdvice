@@ -1,0 +1,21 @@
+<table border="1">
+    <tr>
+        <td>작성자</td>
+        <td><%= post.user_id %></td>
+    </tr>
+    <tr>
+        <td>제목</td>
+        <td><%= post.post_title %></td>
+    </tr>
+    <tr>
+        <td>내용</td>
+        <td><%= post.post_content %></td>
+    </tr>
+    <tr>
+        <td>등록일</td>
+        <td><%= post.date %></td>
+    </tr>
+</table>
+<form action="/BackHome" method="POST">
+    <button type="submit">뒤로가기</button>
+</form>

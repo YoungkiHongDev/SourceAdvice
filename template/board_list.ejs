@@ -1,0 +1,21 @@
+
+    <table border="1" >
+        <tr>
+            <td>제목</td>
+            <td>작성자</td>
+            <td>게시일</td>
+            <td>훈수</td>
+        </tr>
+        <% for( let i = 0; i < max_number; i++){%>
+        <tr>
+            <!-- 왜 여기서 -1을 해야하는가? -->
+            <td><a href="/read/<%=posts[i].post_no-1%>"><%= posts[i].post_title%></a></td>
+            <td><%= posts[i].user_id%></td>
+            <td><%= posts[i].date%></td>
+            <td>0</td>
+        </tr>
+        <%}%>
+    </table>
+    <form action="/writepost_btn" method="POST">
+        <button type="submit">게시글 등록</button>
+    </form>
