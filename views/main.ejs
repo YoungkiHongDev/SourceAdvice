@@ -1,0 +1,36 @@
+<html>
+
+<!-- ---------------------------Head--------------------------------- -->
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script
+        src="https://kit.fontawesome.com/2d323a629b.js"
+        crossorigin="anonymous"
+    ></script>
+    <%- include('../template/nav.html') %>
+</head>
+<!-- ---------------------------Head--------------------------------- -->
+
+<!-- 0번은 게시판, 1번은 게시물 작성, 2번은 게시물 보기 -->
+<!-- ---------------------------Body--------------------------------- -->
+<body>
+    <form action="/logout" method="POST">
+        <button type="submit">Logout</button>
+    </form>
+    <center>
+    <% if (page_state == 0) { %>
+        <%- include('../template/board_list') %>
+    <% } else if (page_state == 1) { %>
+        <%- include('../template/board_writePost') %>
+    <% } else if (page_state == 2) { %>
+        <%- include('../template/board_readPost') %>
+    <% } %>
+    </center>
+    <%- include('../template/footer.html') %>
+</body>
+<!-- ---------------------------Body--------------------------------- -->
+
+</html>
