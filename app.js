@@ -39,7 +39,7 @@ const Post = mongoose.model('posts', PostSchema);
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
-app.use(express.static(__dirname + '/views'));
+app.use(express.static(__dirname + '/css'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({
     secret: 'keyboard cat',
