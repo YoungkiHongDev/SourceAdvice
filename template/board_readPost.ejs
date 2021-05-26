@@ -1,21 +1,26 @@
-<table border="1">
+<center>
+<div class="row justify-content-center">
+    <div class="col-sm-6">
+<table class="table table-responsive">
     <tr>
         <td>작성자</td>
         <td><%= post.user_id %></td>
+        <td>등록일</td>
+        <td><%= post.date %></td>
     </tr>
     <tr>
         <td>제목</td>
         <td><%= post.post_title %></td>
     </tr>
     <tr>
-        <td>내용</td>
-        <td><%= post.post_content %></td>
+        <td colspan="6">Code</td>
     </tr>
-    <tr>
-        <td>등록일</td>
-        <td><%= post.date %></td>
+    <% for(let i = 0; i < post.post_content.length; i++){ %>
+    <tr  onmouseover="this.style.background='#FFE4E1'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td colspan="6"><%= post.post_content[i] %></td>
     </tr>
+    <%}%>
 </table>
-<form action="/BackHome" method="POST">
-    <button type="submit">뒤로가기</button>
-</form>
+</div>
+</div>
+</center>

@@ -29,7 +29,7 @@ const PostSchema = mongoose.Schema({
     post_no : Number,
     user_id : String,
     post_title : String,
-    post_content : String,
+    post_content : { type: Array },
     date : String,
 });
 //글 도큐먼트에 속성으로 하나 더 추가해서 라인수와 훈수를 저장하면 한번에 불러올 수 있다.
@@ -181,6 +181,7 @@ app.post('/uploadPost', (req, res) => {
     var user_id = req.session.user_id;
     var post_title = req.body.post_title;
     var post_content = req.body.post_content;
+    var content = post_content = post_content.split(/\r\n|\r\n/);
     var date = moment().format("YYYY-MM-DD HH:mm:ss");
 
     Post.findOne({})
@@ -190,7 +191,7 @@ app.post('/uploadPost', (req, res) => {
 
             post_no = post.post_no;
             Post.create({ "post_no": post_no+1, "user_id": user_id, "post_title": post_title, 
-                        "post_content": post_content, "date": date }, (err) => {
+                        "post_content": content, "date": date }, (err) => {
                 if (err) return res.json(err);
                 console.log('Success');
                 page_state = 0;
