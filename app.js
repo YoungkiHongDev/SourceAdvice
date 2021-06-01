@@ -9,6 +9,8 @@ const moment = require('moment');
 mongoose.connect('mongodb://localhost:27017/hunsu');
 const db = mongoose.connection;
 
+
+// DB 커넥트 성공 여부
 db.once('err', () => {
     console.log(err);
 });
@@ -17,6 +19,7 @@ db.once('open', () => {
     console.log('DB connected');
 });
 
+// User 스키마
 const UserSchema = mongoose.Schema({
     user_id: String,
     password: String,
@@ -25,6 +28,8 @@ const UserSchema = mongoose.Schema({
     address: String,
 });
 
+// Post 스키마
+// 게시글을 보여줄 때 한줄씩 끊어서 보여주기 위해서 content는 배열로 지정함
 const PostSchema = mongoose.Schema({
     post_no : Number,
     user_id : String,
@@ -37,6 +42,7 @@ const PostSchema = mongoose.Schema({
 const User = mongoose.model('users', UserSchema);
 const Post = mongoose.model('posts', PostSchema);
 
+//이것저것 설정
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use(express.static(__dirname + '/css'));
@@ -67,8 +73,11 @@ app.use(session({
 //      {post_no : 7, user_id : "admin", post_title : "test7", post_content : "test", date : "2021-05-09 22:09:00"}
 // ])
 
-let page_state = 0;
+let page_state = 0;  //페이지 중앙에 어떤 콘텐츠를 보여줄지 결정하기 위한 변수이며 이 변수를 이용하여 중앙의 컨텐츠를 바꾼다.
 var idx = 0;
+
+
+// 메인 페이지
 app.get('/', async (req, res) => {
     if (req.session.logined) {
         if (page_state == 2) {
@@ -97,6 +106,7 @@ app.get('/', async (req, res) => {
     }
 });
 
+//회원가입
 app.post('/register', (req, res) => {
     var uid = req.body.user_id;
     var upwd = req.body.password;
@@ -122,6 +132,7 @@ app.post('/register', (req, res) => {
     })
 });
 
+//아이디 찾기
 app.post('/findIDRst', (req, res) => {
     var uname = req.body.name;
     var uemail = req.body.email;
@@ -143,6 +154,7 @@ app.post('/findIDRst', (req, res) => {
     })
 })
 
+//비밀번호 찾기
 app.post('/findPasswordRst', (req, res) => {
     var uid = req.body.user_id;
     var uname = req.body.name;
@@ -176,6 +188,8 @@ app.post('/findPasswordRst', (req, res) => {
 // db.posts.insertOne({ post_no: 3, user_id : "admin", post_title : "test3", post_content : "test", date : "2021-05-09" })
 // db.posts.insertOne({ post_no: 4, user_id : "admin", post_title : "test4", post_content : "test", date : "2021-05-09" })
 // db.posts.insertOne({ post_no: 5, user_id : "admin", post_title : "test5", post_content : "test", date : "2021-05-09" })
+
+//게시글 작성
 app.post('/uploadPost', (req, res) => {
     let post_no;
     var user_id = req.session.user_id;
@@ -200,49 +214,59 @@ app.post('/uploadPost', (req, res) => {
     });
 });
 
+//로그아웃 버튼 클릭
 app.post('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/');
 });
 
+//회원가입 버튼 클릭
 app.post('/regist', (req, res) => {
     res.render('register', );
 })
 
+//아이디 찾기 버튼 클릭
 app.post('/findID', (req, res) => {
     res.render('findID');
 })
 
+//비밀번호 찾기 버튼 클릭
 app.post('/findpwd', (req, res) => {
     res.render('findPassword');
 })
 
+//뒤로가기 버튼 클릭
 app.post('/BackHome', (req, res) => {
     page_state = 0;
     res.redirect('/');
 })
 
+//게시글 작성 버튼 클릭
 app.post('/writePost_btn', (req, res) => {
     page_state = 1;
     res.redirect('/');
 })
 
+//게시글을 보기위해 제목을 클릭했을 때
 app.get('/read/:post_no',(req,res,next) => {
     page_state = 2;
     idx = req.params.post_no;
     res.redirect('/');
 });
 
+//로그인 버튼 클릭
 app.post('/', (req, res) => {
     let id = req.body.user_id;
     let pwd = req.body.password;
     duplicate(req, res, id, pwd);
 });
 
+
 app.listen(3000, () => {
     console.log('listening 3000port');
 });
 
+//로그인 시 동작될 함수
 function duplicate(req, res, uid, upwd) {
     let parseUrl = url.parse(req.url);
     let resource = parseUrl.pathname;
