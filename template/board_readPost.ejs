@@ -1,26 +1,54 @@
+
 <center>
-<div class="row justify-content-center">
-    <div class="col-sm-6">
-<table class="table table-responsive">
-    <tr>
-        <td>작성자</td>
-        <td><%= post.user_id %></td>
-        <td>등록일</td>
-        <td><%= post.date %></td>
-    </tr>
-    <tr>
-        <td>제목</td>
-        <td><%= post.post_title %></td>
-    </tr>
-    <tr>
-        <td colspan="6">Code</td>
-    </tr>
-    <% for(let i = 0; i < post.post_content.length; i++){ %>
-    <tr  onmouseover="this.style.background='#FFE4E1'" onmouseout="this.style.backgroundColor='#FFFFFF'">
-        <td colspan="6"><%= post.post_content[i] %></td>
-    </tr>
-    <%}%>
-</table>
-</div>
-</div>
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <table class="table table-responsive" id="content_table">
+                <tr>
+                    <td colspan="2">작성자</td>
+                    <td colspan="2"><%= post.user_id %></td>
+                    <td colspan="2">등록일</td>
+                    <td colspan="2"><%= post.date %></td>
+                </tr>
+                <tr>
+                    <td colspan="4">제목</td>
+                    <td colspan="4"><%= post.post_title %></td>
+                </tr>
+                <tr>
+                    <td colspan="8">Code</td>
+                </tr>
+                <div id="line">
+            <!-- ----------게시글 줄당 출력---------- -->
+            <% for(let i = 0; i < post.post_content.length; i++){ %>
+            
+                <tr onmouseover="this.style.background='#FFE4E1'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+                    <td colspan="6"><pre><%= post.post_content[i] %></pre></td>
+                    <td>
+                        <div id="<%= 'menu_in_line'+i %>" class="btn-group" role="group" aria-label="Basic example"
+                            style="display:none;">
+                        <button type="button" class="btn btn-primary">훈수두기</button>
+                        <button type="button" class="btn btn-primary">훈수보기</button>
+                        </div>
+                    </td>
+                </tr>
+            <%}%>
+            <!-- ---------게시글 줄당 출력 끝--------- -->
+            </div>
+            </table>
+        </div>
+    </div>
 </center>
+
+<script>
+    $(document).ready(function() {
+        $("#content_table tr").hover(
+            function() { 
+                var btn = $(this).children().children();
+                btn.eq(1).show();
+            },
+            function() { 
+                var btn = $(this).children().children();
+                btn.eq(1).hide();
+            }
+        );
+    });
+</script>

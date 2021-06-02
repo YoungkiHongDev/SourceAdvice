@@ -6,6 +6,7 @@ const MongoStore = require('connect-mongo');
 const bodyParser = require('body-parser');
 const url = require('url');
 const moment = require('moment');
+const { post } = require('jquery');
 mongoose.connect('mongodb://localhost:27017/hunsu');
 const db = mongoose.connection;
 
@@ -195,13 +196,20 @@ app.post('/uploadPost', (req, res) => {
     var user_id = req.session.user_id;
     var post_title = req.body.post_title;
     var post_content = req.body.post_content;
-    var content = post_content = post_content.split(/\r\n|\r\n/);
+    var content = post_content.split(/\r\n|\r\n/);
     var date = moment().format("YYYY-MM-DD HH:mm:ss");
 
+    
     Post.findOne({})
         .sort({post_no: -1})
         .exec( (err, post) =>{
             if (err) return res.json(err);
+
+            // for ( let i = 0; i < content.length; i++){
+            //     console.log(content[i]);
+            //     content[i] = content[i].replace("    ", "tab:");
+            //     console.log(content[i]);
+            // }        
 
             post_no = post.post_no;
             Post.create({ "post_no": post_no+1, "user_id": user_id, "post_title": post_title, 
