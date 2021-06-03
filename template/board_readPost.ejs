@@ -19,14 +19,17 @@
                 <div id="line">
             <!-- ----------게시글 줄당 출력---------- -->
             <% for(let i = 0; i < post.post_content.length; i++){ %>
-            
                 <tr onmouseover="this.style.background='#FFE4E1'" onmouseout="this.style.backgroundColor='#FFFFFF'">
                     <td colspan="6"><pre><%= post.post_content[i] %></pre></td>
                     <td>
-                        <div id="<%= 'menu_in_line'+i %>" class="btn-group" role="group" aria-label="Basic example"
-                            style="display:none;">
-                        <button type="button" class="btn btn-primary">훈수두기</button>
-                        <button type="button" class="btn btn-primary">훈수보기</button>
+                        <div id="<%= 'menu_in_line'+i %>" class="btn-group" role="group" aria-label="Basic example" style="display:none;">
+                            <button type="button" class="btn btn-primary" title="Enter comments">훈수 보기</button>
+                            <div class="DemoBS">
+                                <a href="#" data-toggle="popover" rel="comments" title="Advice" class="btn btn-primary">HUNSU</a>
+                            <!-- <a href="#" class="btn btn-lg btn-danger" data-toggle="popover" title="PopOver Demo" data-content="The size of the pop over depends upon the text area"
+                                role="button">Click to toggle popover</a> -->
+                          </div>
+                            <!-- <button id="<%= 'advice_enter'+i %>" class="btn btn-primary" rel="comments" title="Enter comments">훈수 두기</button> -->
                         </div>
                     </td>
                 </tr>
@@ -37,7 +40,6 @@
         </div>
     </div>
 </center>
-
 <script>
     $(document).ready(function() {
         $("#content_table tr").hover(
@@ -50,5 +52,39 @@
                 btn.eq(1).hide();
             }
         );
+        //이 코드 링크 http://jsfiddle.net/phpdeveloperrahul/e9wYL/
+        $('[data-toggle="popover"]').popover({
+            placement   :   'right',
+            trigger     :   'click',
+            html        :   true,
+            template    :   '<div class="popover" role="tooltip">'+
+                            '<div class="popover-arrow"></div><h3 class="popover-header"></h3>'+
+                            '<div class="popover-body"></div><div class="popover-content"></div>'+
+                            '<div class="popover-footer">'+
+                                '<button type="button" class="btn btn-primary">submit</button>&nbsp;'+
+                                '<button type="button" class="btn btn-default">cancel</button>'+
+                            '</div></div>',
+            content     :   '<textarea class="popover-textarea"></textarea>',
+            container   :   'body'
+        })
+        .on('shown', function() {
+            //attach link text
+            $('.popover-textarea').val($this.text()).focus();
+
+            // //hide any visible comment-popover
+            $('[data-toggle="popover"]').not(this).popover('hide');
+            var $this = $(this);
+                    
+            // //close on cancel
+            $('.popover-cancel').click(function() {
+                $this.popover('hide');
+            });
+
+            // //update link text on submit
+            $('.popover-submit').click(function() {
+                $this.text($('.popover-textarea').val());
+                $this.popover('hide');
+            });
+        });
     });
 </script>
