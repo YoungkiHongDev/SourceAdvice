@@ -22,13 +22,12 @@
                 <tr onmouseover="this.style.background='#FFE4E1'" onmouseout="this.style.backgroundColor='#FFFFFF'">
                     <td colspan="6"><pre><%= post.post_content[i] %></pre></td>
                     <td>
-                        <div id="<%= 'menu_in_line'+i %>" class="btn-group" role="group" aria-label="Basic example" style="display:none;">
+                        <div class="btn-group" role="group" aria-label="Basic example" style="display:none;">
                             <button type="button" class="btn btn-primary" title="Enter comments">훈수 보기</button>
-                            <div class="DemoBS">
-                                <a href="#" data-toggle="popover" rel="comments" title="Advice" class="btn btn-primary">HUNSU</a>
+                            <a id="popover" href="#" data-toggle="popover" rel="comments" title="Advice" class="btn btn-primary">HUNSU</a>
+                            <div id="<%= 'menu_in_line'+i %>" class="DemoBS"></div>
                             <!-- <a href="#" class="btn btn-lg btn-danger" data-toggle="popover" title="PopOver Demo" data-content="The size of the pop over depends upon the text area"
                                 role="button">Click to toggle popover</a> -->
-                          </div>
                             <!-- <button id="<%= 'advice_enter'+i %>" class="btn btn-primary" rel="comments" title="Enter comments">훈수 두기</button> -->
                         </div>
                     </td>
@@ -50,10 +49,55 @@
             function() { 
                 var btn = $(this).children().children();
                 btn.eq(1).hide();
-            }
-        );
-        //이 코드 링크 http://jsfiddle.net/phpdeveloperrahul/e9wYL/
-        $('[data-toggle="popover"]').popover({
+            });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $(document).on('click', '#popover', function() {
+            var $this = $(this);
+            var pop_content =   '<div class="popover" role="tooltip">'+
+                                '<div class="popover-arrow"></div><h3 class="popover-header">Advice</h3>'+
+                                '<div class="popover-content"><textarea class="popover-textarea"></textarea></div>'+
+                                '<div class="popover-footer">'+
+                                    '<button type="button" class="btn btn-primary">submit</button>&nbsp;'+
+                                    '<button id="popover_cancel" type="button" class="btn btn-default">cancel</button>'+
+                                '</div></div>';
+            $this.popover({
+                    title       :   'Advice',
+                    placement   :   'right',
+                    html        :   true,
+                    content     : function() {
+                                return $('div[id^="menu_in_line"]').html(pop_content); },
+                    container   :   'body'
+            })
+            .on('show', function() {
+
+                //attach link text
+                $('.popover-textarea').val($this.text()).focus();
+
+                //hide any visible comment-popover
+                $('.popover').not(this).popover('hide');
+                var $this = $(this);
+        
+                //close on cancel
+                $('#popover_cancel').click(function() {
+                    $this.popover('hide');
+                });
+
+                //update link text on submit
+                $('.popover-submit').click(function() {
+                    $this.text($('.popover-textarea').val());
+                    $this.popover('hide');
+                });
+            });
+        });
+    });
+</script>
+
+
+<!-- // //이 코드 링크 http://jsfiddle.net/phpdeveloperrahul/e9wYL/
+        $("#popover").popover({
             placement   :   'right',
             trigger     :   'click',
             html        :   true,
@@ -66,25 +110,23 @@
                             '</div></div>',
             content     :   '<textarea class="popover-textarea"></textarea>',
             container   :   'body'
-        })
-        .on('shown', function() {
+        }).on('show', function() {
+
             //attach link text
             $('.popover-textarea').val($this.text()).focus();
 
-            // //hide any visible comment-popover
+            //hide any visible comment-popover
             $('[data-toggle="popover"]').not(this).popover('hide');
             var $this = $(this);
                     
-            // //close on cancel
+            //close on cancel
             $('.popover-cancel').click(function() {
                 $this.popover('hide');
             });
 
-            // //update link text on submit
+            //update link text on submit
             $('.popover-submit').click(function() {
                 $this.text($('.popover-textarea').val());
                 $this.popover('hide');
             });
-        });
-    });
-</script>
+        }); -->
