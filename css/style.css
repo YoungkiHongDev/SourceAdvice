@@ -71,7 +71,7 @@ a {
     width: 200px;  
 }
   
-textarea.popover-textarea {
+.popover-textarea {
     border: 1px;   
     margin: 0px; 
     width: 100%;
