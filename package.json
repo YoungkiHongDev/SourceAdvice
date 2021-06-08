@@ -1,10 +1,11 @@
 {
   "name": "web_project_test",
   "version": "1.0.0",
-  "description": "",
+  "description": "[웹개발실무 프로젝트] 소스코드 커뮤니티 사이트 SourceAdvice",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app"
   },
   "author": "",
   "license": "ISC",
@@ -18,5 +19,14 @@
     "jquery": "^3.6.0",
     "moment": "^2.29.1",
     "mongoose": "^5.12.7"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ceron9603/SourceAdvice.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ceron9603/SourceAdvice/issues"
+  },
+  "homepage": "https://github.com/ceron9603/SourceAdvice#readme"
 }
