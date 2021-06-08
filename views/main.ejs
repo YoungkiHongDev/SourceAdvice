@@ -22,12 +22,6 @@
 <!-- 0번은 게시판, 1번은 게시물 작성, 2번은 게시물 보기 -->
 <!-- ---------------------------Body--------------------------------- -->
 <body>
-    <form action="/logout" method="POST">
-        <button type="submit">Logout</button>
-    </form>
-    <form action="/BackHome" method="POST">
-        <button type="submit">뒤로가기</button>
-    </form>
     <center>
     <% if (page_state == 0) { %>
         <%- include('../template/board_list') %>

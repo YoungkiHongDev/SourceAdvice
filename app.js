@@ -222,6 +222,12 @@ app.post('/uploadPost', (req, res) => {
     });
 });
 
+//로고 클릭시 메인 화면
+app.get('/BackHome', (req, res) => {
+    page_state = 0;
+    res.redirect('/');
+})
+
 //로그아웃 버튼 클릭
 app.post('/logout', (req, res) => {
     req.session.destroy();

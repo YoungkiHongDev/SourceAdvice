@@ -1,21 +1,23 @@
 
-    <table border="1" >
+    <table class="table" border="1">
         <thead>
+            <colgroup>
             <tr>
-                <td>제목</td>
-                <td>작성자</td>
-                <td>게시일</td>
-                <td>훈수</td>
+                <th scope="col" col width="30%">제목</th>
+                <th scope="col" col width="10%">작성자</th>
+                <th scope="col" col width="10%">게시일</th>
+                <th scope="col" col width="10%">훈수</th>
             </tr>
+            </colgroup>
         </thead>
         <tbody>
         <% for( let i = 0; i < max_number; i++){%>
         <tr>
             <!-- 왜 여기서 -1을 해야하는가? -->
-            <td><a href="/read/<%=posts[i].post_no-1%>"><%= posts[i].post_title %></a></td>
-            <td><%= posts[i].user_id%></td>
-            <td><%= posts[i].date%></td>
-            <td>0</td>
+            <th scope="row"><a href="/read/<%=posts[i].post_no-1%>"><%= posts[i].post_title %></a></th>
+            <th><%= posts[i].user_id%></th>
+            <th><%= posts[i].date%></th>
+            <th>0</th>
         </tr>
         <%}%>
         </tbody>
