@@ -1,27 +1,33 @@
+<center>
+    <div class="row justify-content-center"">
+        <div class="col-sm-8">
+            <table class="table" border="1">
+                <thead>
+                    <colgroup>
+                    <tr>
+                        <th scope="col" col width="20%">제목</th>
+                        <th scope="col" col width="10%">작성자</th>
+                        <th scope="col" col width="20%">게시일</th>
+                        <th scope="col" col width="10%">훈수</th>
+                    </tr>
+                    </colgroup>
+                </thead>
+                <tbody>
+                <% for( let i = 0; i < max_number; i++){%>
+                <tr>
+                    <!-- 왜 여기서 -1을 해야하는가? -->
+                    <th scope="row"><a href="/read/<%=posts[i].post_no-1%>"><%= posts[i].post_title %></a></th>
+                    <th><%= posts[i].user_id%></th>
+                    <th><%= posts[i].date%></th>
+                    <th>0</th>
+                </tr>
+                <%}%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</center>
 
-    <table class="table" border="1">
-        <thead>
-            <colgroup>
-            <tr>
-                <th scope="col" col width="30%">제목</th>
-                <th scope="col" col width="10%">작성자</th>
-                <th scope="col" col width="10%">게시일</th>
-                <th scope="col" col width="10%">훈수</th>
-            </tr>
-            </colgroup>
-        </thead>
-        <tbody>
-        <% for( let i = 0; i < max_number; i++){%>
-        <tr>
-            <!-- 왜 여기서 -1을 해야하는가? -->
-            <th scope="row"><a href="/read/<%=posts[i].post_no-1%>"><%= posts[i].post_title %></a></th>
-            <th><%= posts[i].user_id%></th>
-            <th><%= posts[i].date%></th>
-            <th>0</th>
-        </tr>
-        <%}%>
-        </tbody>
-    </table>
-    <form action="/writepost_btn" method="POST">
-        <button type="submit">게시글 등록</button>
-    </form>
+<form action="/writepost_btn" method="POST">
+    <button class="btn btn-outline-secondary" type="submit">게시글 등록</button>
+</form>

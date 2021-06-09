@@ -5,29 +5,38 @@
     <title>
         Login
     </title>
+    <link rel="stylesheet" href="./login.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
     <center>
-        <h1>Login Page</h1>
-        <table>
-            <form action="/" method="POST">
-                <input id="user_id" name="user_id" type="text" placeholder="ID">
-                <br />
-                <input id="password" name="password" type="password" placeholder="Password">
-                <br />
-                <button type="submit ">로그인</button>
-            </form>
-            <form action="/regist" method="POST">
-                <button type="submit">회원가입</button>
-            </form>
-            <form action="/findID" method="POST">
-                <button type="submit">아이디 찾기</button>
-            </form>
-            <form action="/findpwd" method="POST">
-                <button type="submit">비밀번호 찾기</button>
-            </form>
-        </table>
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+                <h1>Source Advice</h1>
+                <form action="/" method="POST">
+                    <input id="user_id" name="user_id" type="text" placeholder="ID">
+                    <br />
+                    <input id="password" name="password" type="password" placeholder="Password">
+                    <br />
+                    <button class="btn btn-outline-primary" style="margin-top:2%" type="submit">로그인</button>
+                </form>
+                <form form action="/regist" method="POST">
+                    <button class="btn btn-primary" type="submit">회원가입</button>
+                 </form>
+
+                <div id="formFooter">
+                    <form action="/findID" method="POST">
+                        <button class="btn btn-outline-secondary" style="margin-right:3px" submit">ID 찾기</button>
+                    </form>
+                    <form action="/findpwd" method="POST">
+                        <button class="btn btn-outline-secondary" style="margin-left:3px" type="submit">PW 찾기</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </center>
 </body>
 
