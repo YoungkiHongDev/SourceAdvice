@@ -5,6 +5,7 @@
                 <thead>
                     <colgroup>
                     <tr>
+                        <th scope="col" col width="10%">카테고리</th>
                         <th scope="col" col width="20%">제목</th>
                         <th scope="col" col width="10%">작성자</th>
                         <th scope="col" col width="20%">게시일</th>
@@ -16,6 +17,7 @@
                 <% for( let i = 0; i < max_number; i++){%>
                 <tr>
                     <!-- 왜 여기서 -1을 해야하는가? -->
+                    <th><%= posts[i].post_kategorie%>
                     <th scope="row"><a href="/read/<%=posts[i].post_no-1%>"><%= posts[i].post_title %></a></th>
                     <th><%= posts[i].user_id%></th>
                     <th><%= posts[i].date%></th>
