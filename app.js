@@ -185,11 +185,11 @@ app.post('/findPasswordRst', (req, res) => {
     //         console.log(post[0].post_no);
     //     });
 // db.posts.find().sort( {post_no : -1 } ).limit(1)
-// db.posts.insertOne({ post_no: 1, user_id : "admin", post_title : "test1", post_kategorie : "C", post_content : "test", date : "2021-05-09" })
-// db.posts.insertOne({ post_no: 2, user_id : "admin", post_title : "test2", post_kategorie : "Java", post_content : "test", date : "2021-05-09" })
-// db.posts.insertOne({ post_no: 3, user_id : "admin", post_title : "test3", post_kategorie : "Python", post_content : "test", date : "2021-05-09" })
-// db.posts.insertOne({ post_no: 4, user_id : "admin", post_title : "test4", post_kategorie : "C", post_content : "test", date : "2021-05-09" })
-// db.posts.insertOne({ post_no: 5, user_id : "admin", post_title : "test5", post_kategorie : "C", post_content : "test", date : "2021-05-09" })
+// db.posts.insertOne({ post_no: 1, user_id : "admin", post_title : "test1", post_kategorie : "C", post_content : "test", date : "2021-05-09 00:00:00" })
+// db.posts.insertOne({ post_no: 2, user_id : "admin", post_title : "test2", post_kategorie : "Java", post_content : "test", date : "2021-05-09 00:00:00" })
+// db.posts.insertOne({ post_no: 3, user_id : "admin", post_title : "test3", post_kategorie : "Python", post_content : "test", date : "2021-05-09 00:00:00" })
+// db.posts.insertOne({ post_no: 4, user_id : "admin", post_title : "test4", post_kategorie : "C", post_content : "test", date : "2021-05-09 00:00:00" })
+// db.posts.insertOne({ post_no: 5, user_id : "admin", post_title : "test5", post_kategorie : "C", post_content : "test", date : "2021-05-09 00:00:00" })
 
 //게시글 작성
 app.post('/uploadPost', (req, res) => {
@@ -316,3 +316,21 @@ function duplicate(req, res, uid, upwd) {
         }
     });
 }
+
+//C 메뉴 클릭 시
+app.get('/board_c', (req, res) => {
+    page_state = 3;
+    res.redirect('/');
+});
+
+//Java 메뉴 클릭 시
+app.get('/board_java', (req, res) => {
+    page_state = 4;
+    res.redirect('/');
+});
+
+//Python 메뉴 클릭 시
+app.get('/board_python', (req, res) => {
+    page_state = 5;
+    res.redirect('/');
+});
