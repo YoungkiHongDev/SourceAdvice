@@ -15,19 +15,13 @@
     integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" 
     crossorigin="anonymous">
 
-    <%- include('../template/nav.html') %>
+    <%- include('../template/nav') %>
 </head>
 <!-- ---------------------------Head--------------------------------- -->
 
 <!-- 0번은 게시판, 1번은 게시물 작성, 2번은 게시물 보기 -->
 <!-- ---------------------------Body--------------------------------- -->
 <body>
-    <form action="/logout" method="POST">
-        <button type="submit">Logout</button>
-    </form>
-    <form action="/BackHome" method="POST">
-        <button type="submit">뒤로가기</button>
-    </form>
     <center>
     <% if (page_state == 0) { %>
         <%- include('../template/board_list') %>
@@ -35,9 +29,15 @@
         <%- include('../template/board_writePost') %>
     <% } else if (page_state == 2) { %>
         <%- include('../template/board_readPost') %>
+    <% } else if (page_state == 3) { %>
+        <%- include('../template/board_c') %>
+    <% } else if (page_state == 4) { %>
+        <%- include('../template/board_java') %>
+    <% } else if (page_state == 5) { %>
+        <%- include('../template/board_python') %>
     <% } %>
     </center>
-    <%- include('../template/footer.html') %>
+    <%- include('../template/footer') %>
 </body>
 <!-- ---------------------------Body--------------------------------- -->
 

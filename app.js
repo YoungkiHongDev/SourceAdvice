@@ -37,12 +37,12 @@ const AdviceSchema = mongoose.Schema({
 // Post 스키마
 // 게시글을 보여줄 때 한줄씩 끊어서 보여주기 위해서 content는 배열로 지정함
 const PostSchema = mongoose.Schema({
-    post_no             : { type: Number },
-    user_id             : { type: String },
-    post_title          : { type: String },
-    post_content        : { type: Array },
-    date                : { type: String },
-    code_advice         : { type: [AdviceSchema] }
+    post_no : Number,
+    user_id : String,
+    post_title : String,
+    post_kategorie : String,
+    post_content : { type: Array },
+    date : String,
 });
 
 //글 도큐먼트에 속성으로 하나 더 추가해서 라인수와 훈수를 저장하면 한번에 불러올 수 있다.
@@ -314,46 +314,20 @@ function duplicate(req, res, uid, upwd) {
         }
     });
 }
+//C 메뉴 클릭 시
+app.get('/board_c', (req, res) => {
+    page_state = 3;
+    res.redirect('/');
+});
 
+//Java 메뉴 클릭 시
+app.get('/board_java', (req, res) => {
+    page_state = 4;
+    res.redirect('/');
+});
 
-
-app.post('/write_advice', async (req, res) => {
-    var user_id = req.session.user_id;
-    var advice = req.body.advice;
-    var line = req.body.line * 1;
-    var post_number = req.body.post_no;
-    
-    var as = new AdviceSchema({'content_line' : line}, {'user_id' : user_id}, {'advice' : advice})
-
-    // as.content_line = line
-    // as.user_id = user_id
-    // as.advice = advice
-
-    console.log(as)
-
-    Post.findOne({post_no : post_number})
-        .exec( (err, post) =>{
-            if (err) return res.json(err);
-            
-            as.isNew;
-
-            post.code_advice = as
-            console.log(post.code_advice)
-
-            post.save(function (err) {
-                if (err) return handleError(err)
-                console.log('Success!');
-                res.redirect('/');
-            }); 
-            // post.save()
-            // console.log('Success');
-            // res.redirect('/');
-    });
-
-    // Post.create({ 
-    //     "code_advice" : insert_code_advice}, (err) => {
-    //     if (err) return res.json(err);
-    //     console.log('Success');
-    //     res.redirect('/');
-    // });   
+//Python 메뉴 클릭 시
+app.get('/board_python', (req, res) => {
+    page_state = 5;
+    res.redirect('/');
 });

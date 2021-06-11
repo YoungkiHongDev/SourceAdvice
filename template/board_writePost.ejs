@@ -2,7 +2,15 @@
     <table>
         <tr>
             <td>
-                <input id="post_title" name="post_title" type="text" pleaceholder="제목">
+                <input id="post_title" name="post_title" type="text" placeholder="제목">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>언어 선택</label>
+                <label><input id="post_kategorie"name="post_kategorie" type="radio" value="C">C</label>
+                <label><input id="post_kategorie"name="post_kategorie" type="radio" value="Java">Java</label>
+                <label><input id="post_kategorie"name="post_kategorie" type="radio" value="Python">Python</label>
             </td>
         </tr>
         <tr>
@@ -11,5 +19,8 @@
             </td>
         </tr>
     </table>
-    <button type="submit ">Upload</button>
+    <button class="btn btn-outline-primary" type="submit ">글 쓰기</button>
+    <form action="/BackHome" method="POST">
+        <button class="btn btn-outline-secondary" type="submit">글 목록</button>
+    </form>
 </form>

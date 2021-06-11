@@ -5,54 +5,17 @@ html, body {
     font-family: 'Source Sans Pro';
 }
 
+table {
+    table-layout:fixed;
+    word-break:break-all;
+}
+
 a {
-    text-decoration: none;
-    color: white;
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #263343;
-    padding: 8px 12px;
-}
-
-.navbar_logo {
-    font-size: 24px;
-    color: white;
+    text-decoration: none !important;
 }
 
 .navbar_logo {
     color: orange;
-}
-
-.navbar_menu {
-    display: flex;
-    list-style: none;
-    padding-left: 0;
-}
-
-.navbar_menu li {
-    padding: 8px 12px;
-}
-
-.navbar_menu li:hover {
-    background-color: orange;
-    border-radius: 4px;
-}
-
-.navbar_button {
-    list-style: none;
-    display: flex;
-    text-align: center;
-}
-
-.navbar_button li {
-    background-color: #f8585b;
-    border-radius: 10px;
-    margin: 5px;
-    padding: 8px 15px;
 }
 
 .foot {
@@ -62,7 +25,7 @@ a {
     right: 0;
     bottom: 0;
     justify-content: space-around;
-    background-color: lightgrey;
+    background-color: rgb(240, 234, 234);
     padding: 30px;
 }
 

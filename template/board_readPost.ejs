@@ -16,6 +16,10 @@
                     <td colspan="4"><%= post.post_title %></td>
                 </tr>
                 <tr>
+                    <td colspan="4">카테고리</td>
+                    <td colspan="4"><%= post.post_kategorie %></td>
+                </tr>
+                <tr>
                     <td colspan="8">Code</td>
                 </tr>
                 <div id="line">
@@ -49,6 +53,9 @@
         </div>
     </div>
 </center>
+<form action="/BackHome" method="POST">
+    <button class="btn btn-outline-secondary" type="submit">글 목록</button>
+</form>
 <script>
     $(document).ready(function() {
         $("#content_table tr").hover(
