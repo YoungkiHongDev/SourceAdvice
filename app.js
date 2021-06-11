@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const url = require('url');
 const moment = require('moment');
 const { post } = require('jquery');
+const { allowedNodeEnvironmentFlags } = require('process');
 mongoose.connect('mongodb://localhost:27017/hunsu');
 const db = mongoose.connection;
 
@@ -28,16 +29,22 @@ const UserSchema = mongoose.Schema({
     email: String,
     address: String,
 });
-
+const AdviceSchema = mongoose.Schema({
+    content_line    : { type : Number },
+    user_id         : { type : String },
+    advice          : { type : String } 
+});
 // Post 스키마
 // 게시글을 보여줄 때 한줄씩 끊어서 보여주기 위해서 content는 배열로 지정함
 const PostSchema = mongoose.Schema({
-    post_no : Number,
-    user_id : String,
-    post_title : String,
-    post_content : { type: Array },
-    date : String,
+    post_no             : { type: Number },
+    user_id             : { type: String },
+    post_title          : { type: String },
+    post_content        : { type: Array },
+    date                : { type: String },
+    code_advice         : { type: [AdviceSchema] }
 });
+
 //글 도큐먼트에 속성으로 하나 더 추가해서 라인수와 훈수를 저장하면 한번에 불러올 수 있다.
 
 const User = mongoose.model('users', UserSchema);
@@ -65,13 +72,13 @@ app.use(session({
 //                       .limit(limit)
 //                       .exec();
 // db.posts.insertMany([
-//      {post_no : 1, user_id : "admin", post_title : "test1", post_content : "test", date : "2021-05-09 22:09:00"},
-//      {post_no : 2, user_id : "admin", post_title : "test2", post_content : "test", date : "2021-05-09 22:09:00"},
-//      {post_no : 3, user_id : "admin", post_title : "test3", post_content : "test", date : "2021-05-09 22:09:00"},
-//      {post_no : 4, user_id : "admin", post_title : "test4", post_content : "test", date : "2021-05-09 22:09:00"},
-//      {post_no : 5, user_id : "admin", post_title : "test5", post_content : "test", date : "2021-05-09 22:09:00"},
-//      {post_no : 6, user_id : "admin", post_title : "test6", post_content : "test", date : "2021-05-09 22:09:00"},
-//      {post_no : 7, user_id : "admin", post_title : "test7", post_content : "test", date : "2021-05-09 22:09:00"}
+//      {post_no : 0, user_id : "admin", post_title : "test1", post_content : "test", date : "2021-05-09 22:09:00"},
+//      {post_no : 1, user_id : "admin", post_title : "test2", post_content : "test", date : "2021-05-09 22:09:00"},
+//      {post_no : 2, user_id : "admin", post_title : "test3", post_content : "test", date : "2021-05-09 22:09:00"},
+//      {post_no : 3, user_id : "admin", post_title : "test4", post_content : "test", date : "2021-05-09 22:09:00"},
+//      {post_no : 4, user_id : "admin", post_title : "test5", post_content : "test", date : "2021-05-09 22:09:00"},
+//      {post_no : 5, user_id : "admin", post_title : "test6", post_content : "test", date : "2021-05-09 22:09:00"},
+//      {post_no : 6, user_id : "admin", post_title : "test7", post_content : "test", date : "2021-05-09 22:09:00"}
 // ])
 
 let page_state = 0;  //페이지 중앙에 어떤 콘텐츠를 보여줄지 결정하기 위한 변수이며 이 변수를 이용하여 중앙의 컨텐츠를 바꾼다.
@@ -184,11 +191,11 @@ app.post('/findPasswordRst', (req, res) => {
     //         console.log(post[0].post_no);
     //     });
 // db.posts.find().sort( {post_no : -1 } ).limit(1)
-// db.posts.insertOne({ post_no: 1, user_id : "admin", post_title : "test1", post_content : "test", date : "2021-05-09" })
-// db.posts.insertOne({ post_no: 2, user_id : "admin", post_title : "test2", post_content : "test", date : "2021-05-09" })
-// db.posts.insertOne({ post_no: 3, user_id : "admin", post_title : "test3", post_content : "test", date : "2021-05-09" })
-// db.posts.insertOne({ post_no: 4, user_id : "admin", post_title : "test4", post_content : "test", date : "2021-05-09" })
-// db.posts.insertOne({ post_no: 5, user_id : "admin", post_title : "test5", post_content : "test", date : "2021-05-09" })
+// db.posts.insertOne({ post_no: 0, user_id : "admin", post_title : "test1", post_content : "test", date : "2021-05-09" })
+// db.posts.insertOne({ post_no: 1, user_id : "admin", post_title : "test2", post_content : "test", date : "2021-05-09" })
+// db.posts.insertOne({ post_no: 2, user_id : "admin", post_title : "test3", post_content : "test", date : "2021-05-09" })
+// db.posts.insertOne({ post_no: 3, user_id : "admin", post_title : "test4", post_content : "test", date : "2021-05-09" })
+// db.posts.insertOne({ post_no: 4, user_id : "admin", post_title : "test5", post_content : "test", date : "2021-05-09" })
 
 //게시글 작성
 app.post('/uploadPost', (req, res) => {
@@ -198,19 +205,11 @@ app.post('/uploadPost', (req, res) => {
     var post_content = req.body.post_content;
     var content = post_content.split(/\r\n|\r\n/);
     var date = moment().format("YYYY-MM-DD HH:mm:ss");
-
     
     Post.findOne({})
         .sort({post_no: -1})
         .exec( (err, post) =>{
-            if (err) return res.json(err);
-
-            // for ( let i = 0; i < content.length; i++){
-            //     console.log(content[i]);
-            //     content[i] = content[i].replace("    ", "tab:");
-            //     console.log(content[i]);
-            // }        
-
+            if (err) return res.json(err);   
             post_no = post.post_no;
             Post.create({ "post_no": post_no+1, "user_id": user_id, "post_title": post_title, 
                         "post_content": content, "date": date }, (err) => {
@@ -308,3 +307,46 @@ function duplicate(req, res, uid, upwd) {
         }
     });
 }
+
+
+
+app.post('/write_advice', async (req, res) => {
+    var user_id = req.session.user_id;
+    var advice = req.body.advice;
+    var line = req.body.line * 1;
+    var post_number = req.body.post_no;
+    
+    var as = new AdviceSchema({'content_line' : line}, {'user_id' : user_id}, {'advice' : advice})
+
+    // as.content_line = line
+    // as.user_id = user_id
+    // as.advice = advice
+
+    console.log(as)
+
+    Post.findOne({post_no : post_number})
+        .exec( (err, post) =>{
+            if (err) return res.json(err);
+            
+            as.isNew;
+
+            post.code_advice = as
+            console.log(post.code_advice)
+
+            post.save(function (err) {
+                if (err) return handleError(err)
+                console.log('Success!');
+                res.redirect('/');
+            }); 
+            // post.save()
+            // console.log('Success');
+            // res.redirect('/');
+    });
+
+    // Post.create({ 
+    //     "code_advice" : insert_code_advice}, (err) => {
+    //     if (err) return res.json(err);
+    //     console.log('Success');
+    //     res.redirect('/');
+    // });   
+});

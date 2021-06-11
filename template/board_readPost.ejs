@@ -1,5 +1,6 @@
 
 <center>
+    <input type="text" style="display: none;" value="<%= post.post_no %>" id="post_no">
     <div class="col-lg-12" id="ex2_Result1" ></div>
     <div class="row justify-content-center">
         <div class="col-sm-8">
@@ -27,21 +28,17 @@
                         <div class="btn-group" role="group" aria-label="Basic example" style="display:none;">
                             <button type="button" class="btn btn-primary" title="Enter comments">Advice 보기</button>
 
-                            <a id="popover" data-html="true" href="#" data-toggle="Popover" rel="comments" 
-                                class="btn btn-danger"><%= 'menu_in_line'+i %></a>
+                            <a id="<%= 'popover'+i %>" data-html="true" href="#" data-toggle="tooltip" rel="comments"
+                                class="btn btn-danger"><%= 'advice_line'+i %></a>
 
-                            <div class="popover" role="tooltip" style="display: none;" id="<%= 'advice_of_line'+i %>">
+                            <div class="popover" style="display: none;" id="<%= 'advice_line'+i %>">
                                 <div class="popover-arrow"></div><h3 class="popover-header">Advice</h3>
-                                <div class="popover-body"><div class="popover-content"><textarea class="popover-textarea"><%= 'advice_of_line'+i %></textarea></div></div>
+                                <div class="popover-body"><div class="popover-content"><textarea class="popover-textarea" id="<%= 'textarea'+i %>"></textarea></div></div>
                                 <div class="popover-footer">
-                                    <button id="popover_submit" type="button" class="btn btn-primary">submit</button>&nbsp;
-                                    <button id="popover_cancel" type="button" class="btn btn-default">cancel</button>
+                                    <button id="<%= 'popover_submit'+i %>" type="button" class="btn btn-primary">submit</button>&nbsp;
+                                    <button id="<%= 'popover_cancel'+i %>" type="button" class="btn btn-default">cancel</button>
                                 </div>
                             </div>
-                            <!-- <div id="<%= 'menu_in_line'+i %>" class="DemoBS"></div> -->
-                            <!-- <a href="#" class="btn btn-lg btn-danger" data-toggle="popover" title="PopOver Demo" data-content="The size of the pop over depends upon the text area"
-                                role="button">Click to toggle popover</a> -->
-                            <!-- <button id="<%= 'advice_enter'+i %>" class="btn btn-primary" rel="comments" title="Enter comments">훈수 두기</button> -->
                         </div>
                     </td>
                 </tr>
@@ -68,119 +65,50 @@
 <script>
     //현재 어드바이스를 작성하는 line
     var selected_line
-
-    // 버튼 클릭시 몇번째 줄인지 식별하기 위한 이벤트
-    // $(".btn-danger").click(function(){ 
-    //     var checkBtn = $(this);
-    //     selected_line = checkBtn.text().substring(12) * 1;
-    //     $("#ex2_Result1").html(checkBtn.text().substring(12));
-
-        //아래 코드는 예비
-        // checkBtn.parent() : checkBtn의 부모는 <td>이다.
-        // checkBtn.parent().parent() : <td>의 부모이므로 <tr>이다.
-        // var tr = checkBtn.parent().parent();
-        // var td = tr.children();
-        // var button_text = td.eq(0).text();
-        // var line_text = button_text.replace(" ", "/")
-    //});
+    var selected_td
 
     $(document).ready(function() {
         $(document).on('click', '.btn-danger', function() {
             var $this = $(this);
-            var checkBtn = $(this); //여기서 $(this)는 버튼이다. 이것을 이용하여 각 tr에 분배된 popover 객체를 움직일 수 있을것같다.
-            //이후에 버튼을 누른 line의 popover 객체만 show하면 된다.
-            //그리고 show와 hide를 정상적으로 작동시킬 수 있어야 한다.
-            selected_line = checkBtn.text().substring(12) * 1;
-            $("#ex2_Result1").html(selected_line);
+            var checkBtn = $(this);
+
+            selected_line = checkBtn.text().substring(11) * 1;
+
+            selected_td = checkBtn.parent();
+            console.log(selected_td.find('#popover_cancel'+selected_line))
             
-            $('.btn-danger').popover({
+            $(selected_td.children('#popover'+selected_line)).popover({
                     trigger     :   'click',
                     placement   :   'right',
                     html        :   true,
                     content     :   function() {
-                        var popover =  $('.popover');
-                        popover.show();
-                        return popover
+                        var pop =  selected_td.children('#advice_line'+selected_line)
+                        return pop.show()
                     },
                     container   :   'body'
-            })
-            
-            .on('show', function() {
-                //attach link text
-                $('.popover-textarea').val($this.text()).focus();
+            });
 
-                //hide any visible comment-popover
-                $('.btn-danger').not(this).popover('hide');
-                var $this = $(this);
-        
-                //close on cancel
-                $('#popover_cancel').click(function() {
-                   $this.popover('hide');
-                });
+            // cancel
+            $(selected_td.find('#popover_cancel'+selected_line)).click(function() {
+                $this.popover('dispose')
+            });
 
-                //update link text on submit
-                $('#popover_submit').click(function() {
-                   $this.text($('.popover-textarea').val());
-                   $this.popover('hide');
-                });
+            // submit
+            $(selected_td.find('#popover_submit'+selected_line)).click(function() {
+                var advice = $('#textarea'+selected_line).val()
+                $.ajax({
+                    url:'/write_advice',
+                    type:'POST',
+                    data:{
+                        advice  : advice,
+                        line    : selected_line,
+                        post_no : $('#post_no').val()
+                    },
+                })
+                $this.popover('dispose')
             });
         });
     });
 </script>
 
-
-<!-- 킵 -->
-<!-- var pop_template =  '<div class="popover" role="tooltip">'+
-    '<div class="popover-arrow"></div><h3 class="popover-header">Advice</h3>'+
-    '<div class="popover-body"></div><div class="popover-content"></div>'+
-    '<div class="popover-footer">'+
-        '<button id="popover-submit" type="button" class="btn btn-primary">submit</button>&nbsp;'+
-        '<button id="popover_cancel" type="button" class="btn btn-default">cancel</button>'+
-    '</div></div>';
-var co_content =   '<div class="form-group">'+
-        '<textarea id="txtContent"></textarea>'+
-        '<button id="btnOk" type="button" class="btn btn-default">'+
-            '<span class="glyphicon glyphicon-ok"></span>&nbsp;'+
-        '</button>'+
-        '<button id="btnCancel" type="button" class="btn btn-default">'+
-            '<span class="glyphicon glyphicon-remove"></span>&nbsp;'+
-        '</button>'+
-    '</div>';
-
-var pop_content = '<textarea class="popover-textarea"></textarea>'; -->
-
-
-<!-- // //이 코드 링크 http://jsfiddle.net/phpdeveloperrahul/e9wYL/
-        $("#popover").popover({
-            placement   :   'right',
-            trigger     :   'click',
-            html        :   true,
-            template    :   '<div class="popover" role="tooltip">'+
-                            '<div class="popover-arrow"></div><h3 class="popover-header"></h3>'+
-                            '<div class="popover-body"></div><div class="popover-content"></div>'+
-                            '<div class="popover-footer">'+
-                                '<button type="button" class="btn btn-primary">submit</button>&nbsp;'+
-                                '<button type="button" class="btn btn-default">cancel</button>'+
-                            '</div></div>',
-            content     :   '<textarea class="popover-textarea"></textarea>',
-            container   :   'body'
-        }).on('show', function() {
-
-            //attach link text
-            $('.popover-textarea').val($this.text()).focus();
-
-            //hide any visible comment-popover
-            $('[data-toggle="popover"]').not(this).popover('hide');
-            var $this = $(this);
-                    
-            //close on cancel
-            $('.popover-cancel').click(function() {
-                $this.popover('hide');
-            });
-
-            //update link text on submit
-            $('.popover-submit').click(function() {
-                $this.text($('.popover-textarea').val());
-                $this.popover('hide');
-            });
-        }); -->
+<!-- // //이 코드 링크 http://jsfiddle.net/phpdeveloperrahul/e9wYL/ -->
