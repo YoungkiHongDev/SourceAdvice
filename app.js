@@ -191,17 +191,18 @@ app.post('/findPasswordRst', (req, res) => {
     //         console.log(post[0].post_no);
     //     });
 // db.posts.find().sort( {post_no : -1 } ).limit(1)
-// db.posts.insertOne({ post_no: 0, user_id : "admin", post_title : "test1", post_content : "test", date : "2021-05-09" })
-// db.posts.insertOne({ post_no: 1, user_id : "admin", post_title : "test2", post_content : "test", date : "2021-05-09" })
-// db.posts.insertOne({ post_no: 2, user_id : "admin", post_title : "test3", post_content : "test", date : "2021-05-09" })
-// db.posts.insertOne({ post_no: 3, user_id : "admin", post_title : "test4", post_content : "test", date : "2021-05-09" })
-// db.posts.insertOne({ post_no: 4, user_id : "admin", post_title : "test5", post_content : "test", date : "2021-05-09" })
+// db.posts.insertOne({ post_no: 1, user_id : "admin", post_title : "test1", post_kategorie : "C", post_content : "test", date : "2021-05-09 00:00:00" })
+// db.posts.insertOne({ post_no: 2, user_id : "admin", post_title : "test2", post_kategorie : "Java", post_content : "test", date : "2021-05-09 00:00:00" })
+// db.posts.insertOne({ post_no: 3, user_id : "admin", post_title : "test3", post_kategorie : "Python", post_content : "test", date : "2021-05-09 00:00:00" })
+// db.posts.insertOne({ post_no: 4, user_id : "admin", post_title : "test4", post_kategorie : "C", post_content : "test", date : "2021-05-09 00:00:00" })
+// db.posts.insertOne({ post_no: 5, user_id : "admin", post_title : "test5", post_kategorie : "C", post_content : "test", date : "2021-05-09 00:00:00" })
 
 //게시글 작성
 app.post('/uploadPost', (req, res) => {
     let post_no;
     var user_id = req.session.user_id;
     var post_title = req.body.post_title;
+    var post_kategorie = req.body.post_kategorie;
     var post_content = req.body.post_content;
     var content = post_content.split(/\r\n|\r\n/);
     var date = moment().format("YYYY-MM-DD HH:mm:ss");
@@ -211,7 +212,7 @@ app.post('/uploadPost', (req, res) => {
         .exec( (err, post) =>{
             if (err) return res.json(err);   
             post_no = post.post_no;
-            Post.create({ "post_no": post_no+1, "user_id": user_id, "post_title": post_title, 
+            Post.create({ "post_no": post_no+1, "user_id": user_id, "post_title": post_title, "post_kategorie": post_kategorie,
                         "post_content": content, "date": date }, (err) => {
                 if (err) return res.json(err);
                 console.log('Success');
@@ -220,6 +221,12 @@ app.post('/uploadPost', (req, res) => {
             });   
     });
 });
+
+//로고 클릭시 메인 화면
+app.get('/BackHome', (req, res) => {
+    page_state = 0;
+    res.redirect('/');
+})
 
 //로그아웃 버튼 클릭
 app.post('/logout', (req, res) => {
