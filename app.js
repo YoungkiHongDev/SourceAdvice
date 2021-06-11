@@ -29,11 +29,15 @@ const UserSchema = mongoose.Schema({
     email: String,
     address: String,
 });
+const User = mongoose.model('users', UserSchema);
+
 const AdviceSchema = mongoose.Schema({
     content_line    : { type : Number },
     user_id         : { type : String },
     advice          : { type : String } 
 });
+const Advice = mongoose.model('advice', AdviceSchema);
+
 // Post 스키마
 // 게시글을 보여줄 때 한줄씩 끊어서 보여주기 위해서 content는 배열로 지정함
 const PostSchema = mongoose.Schema({
@@ -45,11 +49,11 @@ const PostSchema = mongoose.Schema({
     date                : { type: String },
     code_advice         : { type: [AdviceSchema] }
 });
-
+const Post = mongoose.model('posts', PostSchema);
 //글 도큐먼트에 속성으로 하나 더 추가해서 라인수와 훈수를 저장하면 한번에 불러올 수 있다.
 
-const User = mongoose.model('users', UserSchema);
-const Post = mongoose.model('posts', PostSchema);
+
+
 
 //이것저것 설정
 app.set('view engine', 'ejs');
@@ -301,10 +305,7 @@ function duplicate(req, res, uid, upwd) {
 
                     if (!user) {
                         console.log('login failed');
-                        res.send(`
-                    <a href="/">Back</a>
-                    <h1>Login failed - different password</h1>
-                `);
+                        res.send('<a href="/">Back</a><h1>Login failed - different password</h1>');
                     } else {
                         console.log('welcome');
                         req.session.user_id = uid;
@@ -334,42 +335,26 @@ app.get('/board_python', (req, res) => {
     res.redirect('/');
 });
 
+// 훈수 추가
 app.post('/write_advice', async (req, res) => {
-    var user_id = req.session.user_id;
-    var advice = req.body.advice;
-    var line = req.body.line * 1;
-    var post_number = req.body.post_no;
-    
-    var as = new AdviceSchema({'content_line' : line}, {'user_id' : user_id}, {'advice' : advice})
+    var input_user_id = req.session.user_id;
+    var input_advice = req.body.advice;
+    var input_line = req.body.line * 1;
+    var search_number = req.body.post_no;
 
-    // as.content_line = line
-    // as.user_id = user_id
-    // as.advice = advice
-
-    console.log(as)
-
-    Post.findOne({post_no : post_number})
+    Post.findOne({ post_no : search_number })
         .exec( (err, post) =>{
             if (err) return res.json(err);
-            
-            as.isNew;
 
-            post.code_advice = as
-            console.log(post.code_advice)
-
-            post.save(function (err) {
-                if (err) return handleError(err)
-                console.log('Success!');
-                res.redirect('/');
-            }); 
-            // post.save()
-            // console.log('Success');
-            // res.redirect('/');
+            post.code_advice.push(new Advice({
+                content_line : input_line,
+                user_id : input_user_id,
+                advice : input_advice
+            }))
+            post.save()
+            console.log('Success');
+            res.redirect('/');
     });
+});
 
-    // Post.create({ 
-    //     "code_advice" : insert_code_advice}, (err) => {
-    //     if (err) return res.json(err);
-    //     console.log('Success');
-    //     res.redirect('/');
-    // });
+// 훈수 보기
