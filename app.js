@@ -351,7 +351,10 @@ app.post('/write_advice', async (req, res) => {
                 user_id : input_user_id,
                 advice : input_advice
             }))
-            post.save()
+            post.save(function(err){
+                if(!err)
+                    console.log('advice saved!')
+            })
             console.log('Success');
             res.redirect('/');
     });
