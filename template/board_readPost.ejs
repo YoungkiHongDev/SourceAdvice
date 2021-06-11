@@ -1,7 +1,6 @@
 
 <center>
     <input type="text" style="display: none;" value="<%= post.post_no %>" id="post_no">
-    <div class="col-lg-12" id="ex2_Result1" ></div>
     <div class="row justify-content-center">
         <div class="col-sm-8">
             <table class="table table-responsive" id="content_table">
@@ -28,12 +27,12 @@
                 <tr onmouseover="this.style.background='#FFE4E1'" onmouseout="this.style.backgroundColor='#FFFFFF'">
                     <td><%= i %></td>
                     <td colspan="6"><pre><%= post.post_content[i] %></pre></td>
-                    <td>
+                    <td colspan="2">
                         <div class="btn-group" role="group" aria-label="Basic example" style="display:none;">
-                            <button type="button" class="btn btn-primary" title="Enter comments">Advice 보기</button>
+                            <button id="show_advice" type="button" class="btn btn-primary" title="Enter comments">Advice 보기</button>
 
                             <a id="<%= 'popover'+i %>" data-html="true" href="#" data-toggle="tooltip" rel="comments"
-                                class="btn btn-danger"><%= 'advice_line'+i %></a>
+                                class="btn btn-danger">Advice 등록</a>
 
                             <div class="popover" style="display: none;" id="<%= 'advice_line'+i %>">
                                 <div class="popover-arrow"></div><h3 class="popover-header">Advice</h3>
@@ -56,6 +55,8 @@
 <form action="/BackHome" method="POST">
     <button class="btn btn-outline-secondary" type="submit">글 목록</button>
 </form>
+
+<!-- 마우스를 대면 하이라이트 효과 -->
 <script>
     $(document).ready(function() {
         $("#content_table tr").hover(
@@ -69,8 +70,11 @@
             });
     });
 </script>
+
+<!-- Advice 작성 -->
+<!-- // //이 코드 링크 http://jsfiddle.net/phpdeveloperrahul/e9wYL/ -->
 <script>
-    //현재 어드바이스를 작성하는 line
+    //현재 어드바이스를 작성하는 line, td
     var selected_line
     var selected_td
 
@@ -118,4 +122,10 @@
     });
 </script>
 
-<!-- // //이 코드 링크 http://jsfiddle.net/phpdeveloperrahul/e9wYL/ -->
+<!-- 작성된 Advice 확인 -->
+<script>
+    $(document).ready(function(){
+        $("#show_advice").click()
+
+    });
+</script>
