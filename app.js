@@ -361,3 +361,30 @@ app.post('/write_advice', async (req, res) => {
 });
 
 // 훈수 보기
+app.post('/read_advice', (req, res) => {
+    var search_number = req.body.post_no;
+    var line = req.body.line;
+    var make_table_string = "<tr><td>ID</td><td>Advice</td></tr>";
+
+    Post.findOne({ post_no : search_number })
+        .exec( (err, post) =>{
+            if (err) return res.json(err);
+
+            for (var i = 0 ; i < post.code_advice.length ; i++) {
+                if (post.code_advice[i].content_line == line){
+                    make_table_string = make_table_string + "<tr>" +
+                                                            "<td>" + 
+                                                                post.code_advice[i].user_id
+                                                          + "</td>"+
+                                                            "<td>" + 
+                                                                post.code_advice[i].advice
+                                                          + "</td>"+
+                                                            "</tr>"
+                }
+            }
+
+            res.send(make_table_string)
+
+        });
+
+});

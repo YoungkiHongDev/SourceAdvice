@@ -1,4 +1,27 @@
-
+<div class="container">
+    <div class="popup-wrap" id="popup">
+        <div class="popup">
+            <div class="popup-head">
+                <span class="head-title"><h3>Advice List</h3></span>
+            </div>
+            <div class="popup-body">
+                <div class="body-content">
+                    <div class="body-contentbox">
+                        <div class="popup-tablebox">
+                            <table>
+                                <div id="advice_table">
+                                </div>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup-foot">
+                <span class="pop-btn close" id="close">닫기</span>
+            </div>
+        </div>
+    </div>
+</div>
 <center>
     <input type="text" style="display: none;" value="<%= post.post_no %>" id="post_no">
     <div class="row justify-content-center">
@@ -26,10 +49,10 @@
             <% for(let i = 0; i < post.post_content.length; i++){ %>
                 <tr onmouseover="this.style.background='#FFE4E1'" onmouseout="this.style.backgroundColor='#FFFFFF'">
                     <td><%= i %></td>
-                    <td colspan="6"><pre><%= post.post_content[i] %></pre></td>
-                    <td colspan="2">
+                    <td colspan="5"><pre><%= post.post_content[i] %></pre></td>
+                    <td colspan="3">
                         <div class="btn-group" role="group" aria-label="Basic example" style="display:none;">
-                            <button id="show_advice" type="button" class="btn btn-primary" title="Enter comments">Advice 보기</button>
+                            <button id="<%= 'modal-open'+i %>" type="button" class="btn btn-info">Advice 보기</button>
 
                             <a id="<%= 'popover'+i %>" data-html="true" href="#" data-toggle="tooltip" rel="comments"
                                 class="btn btn-danger">Advice 등록</a>
@@ -73,17 +96,22 @@
 
 <!-- Advice 작성 -->
 <!-- // //이 코드 링크 http://jsfiddle.net/phpdeveloperrahul/e9wYL/ -->
+<!-- 빈 내용일 시 저장안하고 닫기만 하는 기능 추가 예정 -->
 <script>
     //현재 어드바이스를 작성하는 line, td
     var selected_line
     var selected_td
-
+    
     $(document).ready(function() {
+        // Advice 작성
+        // 현재 클릭한 버튼을 찾을수만 있다면 .on 함수 밖에서 동작하면서 완성될듯?
         $(document).on('click', '.btn-danger', function() {
             var $this = $(this);
             var checkBtn = $(this);
 
-            selected_line = checkBtn.text().substring(11) * 1;
+            selected_line = checkBtn.parent().parent().parent().children('td').eq(0).text()
+
+            console.log(selected_line)
 
             selected_td = checkBtn.parent();
             console.log(selected_td.find('#popover_cancel'+selected_line))
@@ -119,13 +147,29 @@
                 $this.popover('dispose')
             });
         });
-    });
-</script>
 
-<!-- 작성된 Advice 확인 -->
-<script>
-    $(document).ready(function(){
-        $("#show_advice").click()
-
+        // Advice 보기
+        $(".btn-info").click(function(){
+            var checkBtn = $(this);
+            selected_line = checkBtn.parent().parent().parent().children('td').eq(0).text()
+            $.ajax({
+                    url:'/read_advice',
+                    type:'POST',
+                    data:{
+                        line    : selected_line,
+                        post_no : $('#post_no').val()
+                    },
+                    success:function(args){
+                        $('#advice_table').html(args)
+                    }
+            })
+            $("#popup").css('display','flex').hide().fadeIn();
+        });
+        $("#close").click(function(){
+            modalClose();
+        });
+        function modalClose(){
+            $("#popup").fadeOut();
+        }
     });
 </script>
