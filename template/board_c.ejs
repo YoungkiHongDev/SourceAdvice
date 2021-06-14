@@ -34,9 +34,15 @@
                 </tbody>
                 <tr>
                     <td>
-                        <% for(var j = 0; j < max_page; j++){ %>
+                        <%
+                            if (limit_page > 10)
+                                limit_page = 10
+                        %>
+                        [<a href="/page/<%= 1 %>"> << </a>]
+                        <% for(var j = 0; j < limit_page; j++){ %>
                         [<a href="/page/<%= j + 1 %>"><%= j + 1 %></a>]
                         <% } %>
+                        [<a href="/page/<%= 999 %>"> >> </a>]
                     </td>
                 </tr>
             </table>

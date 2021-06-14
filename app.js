@@ -89,10 +89,10 @@ app.use(session({
 
 let page_state = 0;  //페이지 중앙에 어떤 콘텐츠를 보여줄지 결정하기 위한 변수이며 이 변수를 이용하여 중앙의 컨텐츠를 바꾼다.
 var idx = 0;
-var max_page = 0;
-var limit = 10;
+var limit_page = 0;
 var page_kategorie = "";
 var posts;
+var max_page = 0;
 
 
 // 메인 페이지
@@ -116,17 +116,20 @@ app.get('/', async (req, res) => {
                 posts = await Post.find({post_kategorie : page_kategorie})
                                       .sort({post_no: -1})
             }
-            console.log(posts.length)
-            if ((posts.length % 10) == 0)
+
+            if ((posts.length % 10) == 0) {
+                limit_page = parseInt(posts.length / 10);
                 max_page = parseInt(posts.length / 10);
-            else
+            } else {
+                limit_page = parseInt((posts.length / 10) + 1);
                 max_page = parseInt((posts.length / 10) + 1);
+            }
 
             res.render('main', {
                 id          : req.session.user_id,
                 posts       : posts,
                 page_state  : page_state,    //페이지 상태
-                max_page    : max_page,      //페이지 최대
+                limit_page    : limit_page,
             });
         };
     } else {
@@ -137,6 +140,11 @@ app.get('/', async (req, res) => {
 app.get('/page/:page', async (req,res,next) => {
     var page = req.params.page;
     var sub_posts
+
+    if(page == 999)
+        page = max_page
+
+    console.log(page)
     if(page_state == 0){
         sub_posts = await Post.find({})
                               .sort({post_no: -1})
@@ -148,14 +156,11 @@ app.get('/page/:page', async (req,res,next) => {
                               .skip((page - 1) * 10)
     }
 
-    if(page == 999)
-        max_page = 
-    
     res.render('main', {
         id          : req.session.user_id,
         posts       : sub_posts,
         page_state  : page_state,    //페이지 상태
-        max_page    : max_page,      //페이지 최대
+        limit_page    : limit_page,
     });
 });
 
