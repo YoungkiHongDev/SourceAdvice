@@ -90,7 +90,9 @@ app.use(session({
 let page_state = 0;  //페이지 중앙에 어떤 콘텐츠를 보여줄지 결정하기 위한 변수이며 이 변수를 이용하여 중앙의 컨텐츠를 바꾼다.
 var idx = 0;
 var max_page = 0;
-var limit = 0;
+var limit = 10;
+var page_kategorie = "";
+var posts;
 
 
 // 메인 페이지
@@ -107,19 +109,24 @@ app.get('/', async (req, res) => {
         }
         else{
             // 페이지 리스트
-            var posts = await Post.find({})
-                      .sort({post_no: -1})
-                      .limit(10)
-                      .exec();
-            max_page = parseInt((posts[0].post_no / 10) + 1);
-            limit = 10;
+            if(page_state == 0){
+                posts = await Post.find({})
+                                      .sort({post_no: -1})
+            } else{
+                posts = await Post.find({post_kategorie : page_kategorie})
+                                      .sort({post_no: -1})
+            }
+            console.log(posts.length)
+            if ((posts.length % 10) == 0)
+                max_page = parseInt(posts.length / 10);
+            else
+                max_page = parseInt((posts.length / 10) + 1);
 
             res.render('main', {
                 id          : req.session.user_id,
                 posts       : posts,
                 page_state  : page_state,    //페이지 상태
                 max_page    : max_page,      //페이지 최대
-                limit       : limit,         //한 페이지 당 최대 게시글
             });
         };
     } else {
@@ -129,20 +136,26 @@ app.get('/', async (req, res) => {
 
 app.get('/page/:page', async (req,res,next) => {
     var page = req.params.page;
+    var sub_posts
+    if(page_state == 0){
+        sub_posts = await Post.find({})
+                              .sort({post_no: -1})
+                              .skip((page - 1) * 10)
+    }
+    else{
+        sub_posts = await Post.find({post_kategorie : page_kategorie})
+                              .sort({post_no: -1})
+                              .skip((page - 1) * 10)
+    }
 
-    var posts = await Post.find({})
-                      .sort({post_no: -1})
-                      .skip((page - 1) * 10)
-                      .limit(10)
-                      .exec();
+    if(page == 999)
+        max_page = 
     
     res.render('main', {
         id          : req.session.user_id,
-        posts       : posts,
+        posts       : sub_posts,
         page_state  : page_state,    //페이지 상태
         max_page    : max_page,      //페이지 최대
-        limit       : limit,         //한 페이지 당 최대 게시글
-        page        : page
     });
 });
 
@@ -182,7 +195,7 @@ app.post('/findIDRst', (req, res) => {
         if (err) return res.json(err);
         if (user) {
             res.render('findIDResult', {
-                Findid: uname
+                Findid: user.user_id
             });
         } else {
             console.log('can not find ID');
@@ -205,7 +218,7 @@ app.post('/findPasswordRst', (req, res) => {
         if (err) return res.json(err);
         if (user) {
             res.render('findPasswordResult', {
-                passwordid: uname
+                passwordid: user.password
             });
         } else {
             console.log('can not find ID');
@@ -347,18 +360,21 @@ function duplicate(req, res, uid, upwd) {
 //C 메뉴 클릭 시
 app.get('/board_c', (req, res) => {
     page_state = 3;
+    page_kategorie = "C";
     res.redirect('/');
 });
 
 //Java 메뉴 클릭 시
 app.get('/board_java', (req, res) => {
     page_state = 4;
+    page_kategorie = "Java"
     res.redirect('/');
 });
 
 //Python 메뉴 클릭 시
 app.get('/board_python', (req, res) => {
     page_state = 5;
+    page_kategorie = "Python"
     res.redirect('/');
 });
 

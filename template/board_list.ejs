@@ -14,9 +14,14 @@
                     </colgroup>
                 </thead>
                 <tbody>
-                <% for( let i = 0; i < posts.length; i++){%>
+                <%
+                    if(posts.length > 10)
+                        view_post = 10
+                    else
+                        view_post = posts.length
+                %>
+                <% for( let i = 0; i < view_post; i++){%>
                 <tr>
-                    <!-- 왜 여기서 -1을 해야하는가? -->
                     <th><%= posts[i].post_kategorie%></th>
                     <th scope="row"><a href="/read/<%=posts[i].post_no-1%>"><%= posts[i].post_title %></a></th>
                     <th><%= posts[i].user_id%></th>
@@ -26,10 +31,16 @@
                 <%}%>
                 </tbody>
                 <tr>
-                    <td colspan="8">
+                    <td>
+                        <%
+                            if (max_page > 10)
+                                max_page = 10
+                        %>
+                        [<a href="/page/<%= 1 %>"> << </a>]
                         <% for(var j = 0; j < max_page; j++){ %>
                         [<a href="/page/<%= j + 1 %>"><%= j + 1 %></a>]
                         <% } %>
+                        [<a href="/page/<%= 999 %>"> >> </a>]
                     </td>
                 </tr>
             </table>
