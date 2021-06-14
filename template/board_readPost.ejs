@@ -53,10 +53,8 @@
                     <td colspan="3">
                         <div class="btn-group" role="group" aria-label="Basic example" style="display:none;">
                             <button id="<%= 'modal-open'+i %>" type="button" class="btn btn-info">Advice 보기</button>
-
                             <a id="<%= 'popover'+i %>" data-html="true" href="#" data-toggle="tooltip" rel="comments"
                                 class="btn btn-danger">Advice 등록</a>
-
                             <div class="popover" style="display: none;" id="<%= 'advice_line'+i %>">
                                 <div class="popover-arrow"></div><h3 class="popover-header">Advice</h3>
                                 <div class="popover-body"><div class="popover-content"><textarea class="popover-textarea" id="<%= 'textarea'+i %>"></textarea></div></div>
@@ -108,11 +106,8 @@
         $(document).on('click', '.btn-danger', function() {
             var $this = $(this);
             var checkBtn = $(this);
-
             selected_line = checkBtn.parent().parent().parent().children('td').eq(0).text()
-
             console.log(selected_line)
-
             selected_td = checkBtn.parent();
             console.log(selected_td.find('#popover_cancel'+selected_line))
             
@@ -126,12 +121,10 @@
                     },
                     container   :   'body'
             });
-
             // cancel
             $(selected_td.find('#popover_cancel'+selected_line)).click(function() {
                 $this.popover('dispose')
             });
-
             // submit
             $(selected_td.find('#popover_submit'+selected_line)).click(function() {
                 var advice = $('#textarea'+selected_line).val()
@@ -147,7 +140,6 @@
                 $this.popover('dispose')
             });
         });
-
         // Advice 보기
         $(".btn-info").click(function(){
             var checkBtn = $(this);

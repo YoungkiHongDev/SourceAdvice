@@ -12,6 +12,7 @@ mongoose.connect('mongodb://localhost:27017/hunsu');
 const db = mongoose.connection;
 
 
+
 // DB 커넥트 성공 여부
 db.once('err', () => {
     console.log(err);
@@ -88,6 +89,8 @@ app.use(session({
 
 let page_state = 0;  //페이지 중앙에 어떤 콘텐츠를 보여줄지 결정하기 위한 변수이며 이 변수를 이용하여 중앙의 컨텐츠를 바꾼다.
 var idx = 0;
+var max_page = 0;
+var limit = 0;
 
 
 // 메인 페이지
@@ -103,20 +106,44 @@ app.get('/', async (req, res) => {
             })
         }
         else{
+            // 페이지 리스트
             var posts = await Post.find({})
                       .sort({post_no: -1})
+                      .limit(10)
                       .exec();
-            var max_number = posts[0].post_no;
+            max_page = parseInt((posts[0].post_no / 10) + 1);
+            limit = 10;
+
             res.render('main', {
-                id: req.session.user_id,
-                posts : posts,
-                max_number : max_number,
-                page_state : page_state,
+                id          : req.session.user_id,
+                posts       : posts,
+                page_state  : page_state,    //페이지 상태
+                max_page    : max_page,      //페이지 최대
+                limit       : limit,         //한 페이지 당 최대 게시글
             });
         };
     } else {
         res.render('login');
     }
+});
+
+app.get('/page/:page', async (req,res,next) => {
+    var page = req.params.page;
+
+    var posts = await Post.find({})
+                      .sort({post_no: -1})
+                      .skip((page - 1) * 10)
+                      .limit(10)
+                      .exec();
+    
+    res.render('main', {
+        id          : req.session.user_id,
+        posts       : posts,
+        page_state  : page_state,    //페이지 상태
+        max_page    : max_page,      //페이지 최대
+        limit       : limit,         //한 페이지 당 최대 게시글
+        page        : page
+    });
 });
 
 //회원가입
