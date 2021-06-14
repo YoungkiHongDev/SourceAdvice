@@ -14,21 +14,6 @@ a {
     text-decoration: none !important;
 }
 
-.navbar_logo {
-    color: orange;
-}
-
-.foot {
-    position: fixed;
-    display: flex;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    justify-content: space-around;
-    background-color: rgb(240, 234, 234);
-    padding: 30px;
-}
-
 .popover{
   display:none;
 }

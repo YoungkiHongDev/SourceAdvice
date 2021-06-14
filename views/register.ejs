@@ -5,36 +5,45 @@
     <title>
         Register
     </title>
+    <link rel="stylesheet" href="./login.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
     <center>
-        <h1>Register Page</h1>
-        <table>
-            <form action="/register" method="POST">
-                <input id="user_id" name="user_id" type="text" placeholder="ID">
-                <br />
-                <input id="password" name="password" type="password" placeholder="Password">
-                <br />
-                <input id="name" name="name" type="text" placeholder="Name">
-                <br />
-                <input id="email" name="email" type="text" placeholder="E-mail">
-                <br />
-                <input id="address" name="address" type="text" placeholder="Address">
-                <br />
-                <button type="submit ">회원가입</button>
-            </form>
-            
-            <form action="/findID" method="POST">
-                <button type="submit">아이디 찾기</button>
-            </form>
-            <form action="/findpwd" method="POST">
-                <button type="submit">비밀번호 찾기</button>
-            </form>
-            <form action="/BackHome" method="POST">
-                <button type="submit">뒤로가기</button>
-            </form>
-        </table>
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+                <h1>Register Page</h1>
+                <table>
+                    <form action="/register" method="POST">
+                        <input id="user_id" name="user_id" type="text" placeholder="ID">
+                        <br />
+                        <input id="password" name="password" type="password" placeholder="Password">
+                        <br />
+                        <input id="name" name="name" type="text" placeholder="Name">
+                        <br />
+                        <input id="email" name="email" type="text" placeholder="E-mail">
+                        <br />
+                        <input id="address" name="address" type="text" placeholder="Address">
+                        <br />
+                        <br />
+                        <button class="btn btn-outline-secondary" type="submit ">회원가입</button>
+                    </form>
+                    
+                    <form action="/findID" method="POST">
+                        <button class="btn btn-outline-secondary" type="submit">아이디 찾기</button>
+                    </form>
+                    <form action="/findpwd" method="POST">
+                        <button class="btn btn-outline-secondary" type="submit">비밀번호 찾기</button>
+                    </form>
+                    <form action="/BackHome" method="POST">
+                        <button class="btn btn-outline-secondary" type="submit">뒤로가기</button>
+                    </form>
+                </table>
+            </div>
+        </div>
     </center>
 </body>
 

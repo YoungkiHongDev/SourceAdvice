@@ -5,17 +5,26 @@
     <title>
         find ID
     </title>
+    <link rel="stylesheet" href="./login.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<body>
+    <center>
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+                <h1>
+                    your ID
+                    <%= Findid %>
+                </h1>
 
-    <body>
-        <h1>
-            your ID
-            <%= Findid %>
-        </h1>
-
-        <form action="/BackHome" method="POST">
-            <button type="submit">홈 화면으로</button>
-        </form>
-    </body>
+                <form action="/BackHome" method="POST">
+                    <button class="btn btn-outline-secondary" type="submit">홈 화면으로</button>
+                </form>
+            </div>
+        </div>
+    </center>
+</body>
 </head>
 
 </html>
