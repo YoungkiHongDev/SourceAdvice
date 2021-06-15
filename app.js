@@ -249,26 +249,25 @@ app.post('/findPasswordRst', (req, res) => {
 
 //게시글 작성
 app.post('/uploadPost', (req, res) => {
-    let post_no;
+    let post_no = view_post;
     var user_id = req.session.user_id;
     var post_title = req.body.post_title;
     var post_kategorie = req.body.post_kategorie;
     var post_content = req.body.post_content;
     var content = post_content.split(/\r\n|\r\n/);
     var date = moment().format("YYYY-MM-DD HH:mm:ss");
-    
+
     Post.findOne({})
         .sort({post_no: -1})
         .exec( (err, post) =>{
-            if (err) return res.json(err);   
-            post_no = post.post_no;
+            if (err) return res.json(err);
             Post.create({ "post_no": post_no+1, "user_id": user_id, "post_title": post_title, "post_kategorie": post_kategorie,
                         "post_content": content, "date": date }, (err) => {
                 if (err) return res.json(err);
                 console.log('Success');
                 page_state = 0;
                 res.redirect('/');
-            });   
+            });
     });
 });
 
