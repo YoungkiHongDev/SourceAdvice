@@ -5,6 +5,12 @@
     button {
         margin-bottom: 10%;
     }
+    table {
+        margin-top: 5%;
+    }
+    ul {
+        justify-content: center;
+    }
 </style>
 <center>
     <div class="row justify-content-center"">
@@ -12,7 +18,7 @@
             <table class="table" border="1">
                 <thead>
                     <colgroup>
-                    <tr>
+                    <tr class="table-warning">
                         <th scope="col" col width="10%">카테고리</th>
                         <th scope="col" col width="20%">제목</th>
                         <th scope="col" col width="10%">작성자</th>
@@ -41,20 +47,28 @@
                     <%}%>
                 <%}%>
                 </tbody>
-                <tr>
-                    <td>
-                        <%
-                            if (limit_page > 10)
-                                limit_page = 10
-                        %>
-                        [<a href="/page/<%= 1 %>"> << </a>]
-                        <% for(var j = 0; j < limit_page; j++){ %>
-                        [<a href="/page/<%= j + 1 %>"><%= j + 1 %></a>]
-                        <% } %>
-                        [<a href="/page/<%= 999 %>"> >> </a>]
-                    </td>
-                </tr>
             </table>
+            <%
+                if (limit_page > 10)
+                    limit_page = 10
+            %>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                  <li class="page-item">
+                    <a class="page-link" href="/page/<%= 1 %>" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <% for(var j = 0; j < limit_page; j++){ %>
+                  <li class="page-item"><a class="page-link" href="/page/<%= j + 1 %>"><%= j + 1 %></a></li>
+                  <% } %>
+                  <li class="page-item">
+                    <a class="page-link" href="/page/<%= j %>" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </center>
