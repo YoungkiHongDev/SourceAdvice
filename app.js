@@ -249,7 +249,7 @@ app.post('/findPasswordRst', (req, res) => {
 
 //게시글 작성
 app.post('/uploadPost', (req, res) => {
-    let post_no = view_post;
+    let post_no = page_num;
     var user_id = req.session.user_id;
     var post_title = req.body.post_title;
     var post_kategorie = req.body.post_kategorie;
