@@ -26,23 +26,25 @@
     <input type="text" style="display: none;" value="<%= post.post_no %>" id="post_no">
     <div class="row justify-content-center">
         <div class="col-sm-8">
-            <table class="table table-responsive" id="content_table">
+            <table class="table table-responsive" id="content_table" border="1">
                 <tr>
-                    <td colspan="2">작성자</td>
-                    <td colspan="2"><%= post.user_id %></td>
-                    <td colspan="2">등록일</td>
-                    <td colspan="2"><%= post.date %></td>
+                    <td colspan="4">카테고리</td>
+                    <td colspan="4"><%= post.post_kategorie %></td>
                 </tr>
                 <tr>
                     <td colspan="4">제목</td>
                     <td colspan="4"><%= post.post_title %></td>
                 </tr>
                 <tr>
-                    <td colspan="4">카테고리</td>
-                    <td colspan="4"><%= post.post_kategorie %></td>
+                    <td colspan="4">작성자</td>
+                    <td colspan="4"><%= post.user_id %></td>
                 </tr>
                 <tr>
-                    <td colspan="8">Code</td>
+                    <td colspan="4">게시일</td>
+                    <td colspan="4"><%= post.date %></td>
+                </tr>
+                <tr>
+                    <td colspan="8">소스코드</td>
                 </tr>
                 <div id="line">
             <!-- ----------게시글 줄당 출력---------- -->
