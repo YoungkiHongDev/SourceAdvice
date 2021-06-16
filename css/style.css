@@ -14,6 +14,14 @@ a {
     text-decoration: none !important;
 }
 
+#write_btn {
+  margin-top: 2%;
+}
+
+.container {
+  margin-top: 2%;
+}
+
 .popover{
   display:none;
 }
