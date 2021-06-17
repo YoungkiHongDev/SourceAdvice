@@ -22,8 +22,32 @@
         </div>
     </div>
 </div>
+
+<dialog id="delete_Dialog">
+    게시글을 삭제하시겠습니까?
+    <menu>
+        <a class="btn btn-outline-secondary" href="/deletePost/<%=post.post_no%>">예</a>
+        <button class="btn btn-outline-secondary" id="delete_cancel" onclick="onClose()">아니오</button>
+    </menu>
+</dialog>
+
+
+<div class="html_body">
+    <div class="menu_group" align="right">
+        <% if( id == post.user_id ) { %>
+        <div class="menu_item">
+            <button class="btn btn-outline-secondary" id="show_dialog">게시글 삭제</button>
+        </div>
+        <% } %>
+        <div class="menu_item">
+            <form action="/BackHome" method="POST">
+                <button class="btn btn-outline-secondary" type="submit">글 목록으로</button>
+            </form>
+        </div>
+    </div>
 <center>
     <input type="text" style="display: none;" value="<%= post.post_no %>" id="post_no">
+    
     <div class="row justify-content-center">
         <div class="col-sm-8">
             <table class="table table-responsive" id="content_table" border="1">
@@ -75,9 +99,7 @@
         </div>
     </div>
 </center>
-<form action="/BackHome" method="POST">
-    <button class="btn btn-outline-secondary" type="submit">글 목록</button>
-</form>
+</div>
 
 <!-- 마우스를 대면 하이라이트 효과 -->
 <script>
@@ -155,9 +177,10 @@
                     },
                     success:function(args){
                         $('#advice_table').html(args)
+                        $("#popup").css('display','flex').hide().fadeIn();
                     }
             })
-            $("#popup").css('display','flex').hide().fadeIn();
+            
         });
         $("#close").click(function(){
             modalClose();
@@ -166,4 +189,22 @@
             $("#popup").fadeOut();
         }
     });
+</script>
+
+<script>
+    var show_dialog = document.getElementById('show_dialog');
+    var dialog = document.getElementById('delete_Dialog');
+    var delete_cancel = document.getElementById('delete_cancel');
+    
+    show_dialog.addEventListener('click', function onOpen() {
+        if (typeof dialog.showModal === "function") {
+            dialog.showModal();
+        } else {
+            alert("a");
+        }
+    });
+    
+    function onClose() {
+        dialog.close();
+    }
 </script>

@@ -38,7 +38,7 @@
                 <% for( let i = 0; i < view_post; i++){%>
                 <tr>
                     <th><%= posts[i].post_kategorie%></th>
-                    <th scope="row"><a href="/read/<%=posts[i].post_no-1%>"><%= posts[i].post_title %></a></th>
+                    <th scope="row"><a href="/read/<%=posts[i].post_no%>"><%= posts[i].post_title %></a></th>
                     <th><%= posts[i].user_id%></th>
                     <th><%= posts[i].date%></th>
                     <th>0</th>
@@ -69,7 +69,8 @@
             </nav>
         </div>
     </div>
+    <form action="/writepost_btn" method="POST">
+        <button class="btn btn-outline-secondary" type="submit">게시글 등록</button>
+    </form>
 </center>
-<form action="/writepost_btn" method="POST">
-    <button class="btn btn-outline-secondary" type="submit">게시글 등록</button>
-</form>
+

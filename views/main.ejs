@@ -20,9 +20,10 @@
 <!-- ---------------------------Head--------------------------------- -->
 
 <!-- 0번은 게시판, 1번은 게시물 작성, 2번은 게시물 보기 -->
+<!-- 3번은 C, 4번은 Java, 5번은 Python -->
 <!-- ---------------------------Body--------------------------------- -->
 <body>
-    <center>
+
     <% if (page_state == 0) { %>
         <%- include('../template/board_list') %>
     <% } else if (page_state == 1) { %>
@@ -36,11 +37,14 @@
     <% } else if (page_state == 5) { %>
         <%- include('../template/board_python') %>
     <% } %>
-    </center>
-    <%- include('../template/footer') %>
+
+    
 </body>
 <!-- ---------------------------Body--------------------------------- -->
 
+<!-- ---------------------------Foot--------------------------------- -->
+    <%- include('../template/footer') %>
+<!-- ---------------------------Foot--------------------------------- -->
 </html>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" 

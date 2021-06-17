@@ -5,6 +5,11 @@ html, body {
     font-family: 'Source Sans Pro';
 }
 
+.html_body {
+  min-height: 100%;
+  position: relative;
+  padding-bottom: 60px; /* footer height */
+}
 table {
     table-layout:fixed;
     word-break:break-all;
@@ -16,6 +21,15 @@ a {
 
 #write_btn {
   margin-top: 1%;
+}
+
+.menu_group{
+  width: 100%;
+  padding-right: 17%;
+}
+
+.menu_item {
+  display: inline-block;
 }
 
 .container {
@@ -62,6 +76,7 @@ a {
     bottom:0;
     display:none;
     padding:15px; 
+    z-index: 1000;
   }
 
   .popup{

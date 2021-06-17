@@ -10,6 +10,7 @@ const { post } = require('jquery');
 const { allowedNodeEnvironmentFlags } = require('process');
 mongoose.connect('mongodb://localhost:27017/hunsu');
 const db = mongoose.connection;
+const autoIncrement = require('mongoose-auto-increment');
 
 
 
@@ -32,6 +33,7 @@ const UserSchema = mongoose.Schema({
 });
 const User = mongoose.model('users', UserSchema);
 
+// Advice 스키마
 const AdviceSchema = mongoose.Schema({
     content_line    : { type : Number },
     user_id         : { type : String },
@@ -50,8 +52,14 @@ const PostSchema = mongoose.Schema({
     date                : { type: String },
     code_advice         : { type: [AdviceSchema] }
 });
+autoIncrement.initialize(db);
+PostSchema.plugin(autoIncrement.plugin,{ 
+    model : 'posts', 
+    field : 'post_no',
+    startAt : 1, //시작
+    increment : 1 // 증가 
+});
 const Post = mongoose.model('posts', PostSchema);
-//글 도큐먼트에 속성으로 하나 더 추가해서 라인수와 훈수를 저장하면 한번에 불러올 수 있다.
 
 
 
@@ -69,24 +77,6 @@ app.use(session({
         mongoUrl: "mongodb://localhost:27017"
 })}));
 
-//페이지 나누는 알고리즘
-// 개시글 번호를 내림차순으로 정렬한 후 limit로 구분지어서 보여준다.
-// 각 페이지 번호를 누르면 그 번호*10을 해서 그 수만큼 skip하고 보여준다.
-// var posts = await Post.find({})
-//                       .sort({post_no: -1})
-//                       .skip(skip)
-//                       .limit(limit)
-//                       .exec();
-// db.posts.insertMany([
-//      {post_no : 0, user_id : "admin", post_title : "test1", post_content : "test", date : "2021-05-09 22:09:00"},
-//      {post_no : 1, user_id : "admin", post_title : "test2", post_content : "test", date : "2021-05-09 22:09:00"},
-//      {post_no : 2, user_id : "admin", post_title : "test3", post_content : "test", date : "2021-05-09 22:09:00"},
-//      {post_no : 3, user_id : "admin", post_title : "test4", post_content : "test", date : "2021-05-09 22:09:00"},
-//      {post_no : 4, user_id : "admin", post_title : "test5", post_content : "test", date : "2021-05-09 22:09:00"},
-//      {post_no : 5, user_id : "admin", post_title : "test6", post_content : "test", date : "2021-05-09 22:09:00"},
-//      {post_no : 6, user_id : "admin", post_title : "test7", post_content : "test", date : "2021-05-09 22:09:00"}
-// ])
-
 let page_state = 0;  //페이지 중앙에 어떤 콘텐츠를 보여줄지 결정하기 위한 변수이며 이 변수를 이용하여 중앙의 컨텐츠를 바꾼다.
 var idx = 0;
 var limit_page = 0;
@@ -100,7 +90,14 @@ app.get('/', async (req, res) => {
     if (req.session.logined) {
         if (page_state == 2) {
             var post = await Post.find({}).exec();
-            var selected_post = post[idx];
+            var selected_post
+
+            for(let j = 0; j < post.length; j++){
+                if(post[j].post_no == idx){
+                    selected_post = post[j];
+                }
+            }
+
             res.render('main', {
                 id : req.session.user_id,
                 post : selected_post,
@@ -137,6 +134,7 @@ app.get('/', async (req, res) => {
     }
 });
 
+// 페이징
 app.get('/page/:page', async (req,res,next) => {
     var page = req.params.page;
     var sub_posts
@@ -234,12 +232,7 @@ app.post('/findPasswordRst', (req, res) => {
         }
     })
 })
-// Post.find({})
-    //     .sort({post_no: -1})
-    //     .exec( (err, post) =>{
-    //         if (err) return res.json(err);
-    //         console.log(post[0].post_no);
-    //     });
+
 // db.posts.find().sort( {post_no : -1 } ).limit(1)
 // db.posts.insertOne({ post_no: 1, user_id : "admin", post_title : "test1", post_kategorie : "C", post_content : "test", date : "2021-05-09 00:00:00" })
 // db.posts.insertOne({ post_no: 2, user_id : "admin", post_title : "test2", post_kategorie : "Java", post_content : "test", date : "2021-05-09 00:00:00" })
@@ -249,7 +242,6 @@ app.post('/findPasswordRst', (req, res) => {
 
 //게시글 작성
 app.post('/uploadPost', (req, res) => {
-    let post_no = page_num;
     var user_id = req.session.user_id;
     var post_title = req.body.post_title;
     var post_kategorie = req.body.post_kategorie;
@@ -261,7 +253,7 @@ app.post('/uploadPost', (req, res) => {
         .sort({post_no: -1})
         .exec( (err, post) =>{
             if (err) return res.json(err);
-            Post.create({ "post_no": post_no+1, "user_id": user_id, "post_title": post_title, "post_kategorie": post_kategorie,
+            Post.create({ "user_id": user_id, "post_title": post_title, "post_kategorie": post_kategorie,
                         "post_content": content, "date": date }, (err) => {
                 if (err) return res.json(err);
                 console.log('Success');
@@ -270,6 +262,21 @@ app.post('/uploadPost', (req, res) => {
             });
     });
 });
+
+// 게시글 삭제
+app.get('/deletePost/:delete_post_no', (req, res) => {
+    var delete_post_no = req.params.delete_post_no;
+    console.log(delete_post_no)
+    Post.deleteOne({ post_no : delete_post_no }, (err, result) => {
+        if (err) {
+          console.log(err)
+        } else {
+            console.log(result);
+            page_state = 0;
+            res.redirect('/');
+        }
+    });
+})
 
 //로고 클릭시 메인 화면
 app.get('/BackHome', (req, res) => {
@@ -314,6 +321,7 @@ app.post('/writePost_btn', (req, res) => {
 app.get('/read/:post_no',(req,res,next) => {
     page_state = 2;
     idx = req.params.post_no;
+    console.log('delete page_no is ' + idx)
     res.redirect('/');
 });
 
