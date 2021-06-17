@@ -75,8 +75,8 @@
             <% for(let i = 0; i < post.post_content.length; i++){ %>
                 <tr onmouseover="this.style.background='#FFE4E1'" onmouseout="this.style.backgroundColor='#FFFFFF'">
                     <td><%= i %></td>
-                    <td colspan="5"><pre><%= post.post_content[i] %></pre></td>
-                    <td colspan="3">
+                    <td colspan="6"><pre><%= post.post_content[i] %></pre></td>
+                    <td colspan="2">
                         <div class="btn-group" role="group" aria-label="Basic example" style="display:none;">
                             <button id="<%= 'modal-open'+i %>" type="button" class="btn btn-info">Advice 보기</button>
                             <a id="<%= 'popover'+i %>" data-html="true" href="#" data-toggle="tooltip" rel="comments"
@@ -203,7 +203,7 @@
             alert("a");
         }
     });
-    
+
     function onClose() {
         dialog.close();
     }
