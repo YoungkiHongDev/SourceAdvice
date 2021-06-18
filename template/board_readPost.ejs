@@ -1,3 +1,4 @@
+<!-- ------------Advice 보기 클릭 시 나타나는 팝업창-------------- -->
 <div class="container">
     <div class="popup-wrap" id="popup">
         <div class="popup">
@@ -21,12 +22,12 @@
     </div>
 </div>
 
-
+<!-- ------------게시글 삭제 버튼 클릭 시 나타나는 모달 창---------- -->
 <div class="modal fade" id="delete_Dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">게시글 삭제</h5>
+                <h5 class="modal-title">게시글 삭제</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -40,7 +41,35 @@
     </div>
 </div>
 
+<!-- -------------Advice 추가 버튼 클릭 시 나타나는 모달 창---------- -->
+<div class="modal fade" id="advice_Dialog" tabindex="-1" aria-labelledby="AdviceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="AdviceModalLabel">Advice 추가</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label class="col-form-label">Code:</label>
+              <div id="view_code"></div>
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Advice:</label>
+              <textarea class="form-control" id="advice_textarea"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="advice_submit">Advice 등록</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
+<!-- ---------------페이지 시작--------------- -->
 <div class="html_body">
     <div class="menu_group" align="right">
         <% if( id == post.user_id ) { %>
@@ -56,7 +85,6 @@
     </div>
 <center>
     <input type="text" style="display: none;" value="<%= post.post_no %>" id="post_no">
-    
     <div class="row justify-content-center">
         <div class="col-sm-8">
             <table class="table table-responsive">
@@ -90,16 +118,9 @@
                     <td scope='col' col width='30%'>
                         <div class="btn-group" role="group" aria-label="Basic example" style="display:none;">
                             <button id="<%= 'modal-open'+i %>" type="button" class="btn btn-info">Advice 보기</button>
-                            <a id="<%= 'popover'+i %>" data-html="true" href="#" data-toggle="tooltip" rel="comments"
-                                class="btn btn-danger">Advice 등록</a>
-                            <div class="popover" style="display: none;" id="<%= 'advice_line'+i %>">
-                                <div class="popover-arrow"></div><h3 class="popover-header">Advice</h3>
-                                <div class="popover-body"><div class="popover-content"><textarea class="popover-textarea" id="<%= 'textarea'+i %>"></textarea></div></div>
-                                <div class="popover-footer">
-                                    <button id="<%= 'popover_submit'+i %>" type="button" class="btn btn-primary">submit</button>&nbsp;
-                                    <button id="<%= 'popover_cancel'+i %>" type="button" class="btn btn-default">cancel</button>
-                                </div>
-                            </div>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#advice_Dialog" data-bs-whatever="<%= i %>"
+                                    data-bs-content="<%= post.post_content[i] %>">Advice 추가</button>
                         </div>
                     </td>
                 </tr>
@@ -107,10 +128,12 @@
             <!-- ---------게시글 줄당 출력 끝--------- -->
             </div>
             </table>
+            
         </div>
     </div>
 </center>
 </div>
+
 
 <!-- 마우스를 대면 하이라이트 효과 -->
 <script>
@@ -127,53 +150,36 @@
     });
 </script>
 
-<!-- Advice 작성 -->
-<!-- // //이 코드 링크 http://jsfiddle.net/phpdeveloperrahul/e9wYL/ -->
+<!-- Advice 입출력 관련 코드 -->
 <!-- 빈 내용일 시 저장안하고 닫기만 하는 기능 추가 예정 -->
 <script>
-    //현재 어드바이스를 작성하는 line, td
+    //현재 어드바이스를 작성하는 line
     var selected_line
-    var selected_td
+    var advice_Dialog = document.getElementById('advice_Dialog')
+    var clicked_button
     
     $(document).ready(function() {
-        // Advice 작성
-        // 현재 클릭한 버튼을 찾을수만 있다면 .on 함수 밖에서 동작하면서 완성될듯?
-        $(document).on('click', '.btn-danger', function() {
-            var $this = $(this);
-            var checkBtn = $(this);
-            selected_line = checkBtn.parent().parent().parent().children('td').eq(0).text()
-            console.log(selected_line)
-            selected_td = checkBtn.parent();
-            console.log(selected_td.find('#popover_cancel'+selected_line))
-            
-            $(selected_td.children('#popover'+selected_line)).popover({
-                    trigger     :   'click',
-                    placement   :   'right',
-                    html        :   true,
-                    content     :   function() {
-                        var pop =  selected_td.children('#advice_line'+selected_line)
-                        return pop.show()
-                    },
-                    container   :   'body'
-            });
-            // cancel
-            $(selected_td.find('#popover_cancel'+selected_line)).click(function() {
-                $this.popover('dispose')
-            });
-            // submit
-            $(selected_td.find('#popover_submit'+selected_line)).click(function() {
-                var advice = $('#textarea'+selected_line).val()
-                $.ajax({
-                    url:'/write_advice',
-                    type:'POST',
-                    data:{
-                        advice  : advice,
-                        line    : selected_line,
-                        post_no : $('#post_no').val()
-                    },
-                })
-                $this.popover('dispose')
-            });
+        // Advice 등록
+        advice_Dialog.addEventListener('show.bs.modal', function (event) {
+            clicked_button = event.relatedTarget
+            var selected_code = clicked_button.getAttribute('data-bs-content')
+            var view_code = $('#view_code')
+
+            view_code.text(selected_code)
+        });
+        $('#advice_submit').click(function() {
+            $.ajax({
+                url:'/write_advice',
+                type:'POST',
+                data:{
+                    advice  : $('#advice_textarea').val(),
+                    line    : clicked_button.getAttribute('data-bs-whatever'),
+                    post_no : $('#post_no').val()
+                },
+                success : function(){
+                    $("#advice_Dialog").modal('hide');
+                }
+            })
         });
         // Advice 보기
         $(".btn-info").click(function(){
@@ -194,19 +200,7 @@
             
         });
         $("#close").click(function(){
-            modalClose();
-        });
-        function modalClose(){
             $("#popup").fadeOut();
-        }
+        });
     });
-</script>
-
-<script>
-    var show_Modal = document.getElementById('show_Modal')
-    var myModal = document.getElementById('delete_Dialog')
-
-    myModal.addEventListener('shown.bs.modal', function () {
-        show_dialog.focus()
-    })
 </script>
