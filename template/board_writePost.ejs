@@ -1,32 +1,38 @@
 <center>
-<div class="container">
-    <div class="col-sm-7">
-        <form action="/uploadPost" method="POST">
-            <table class="table table-bordered">
-                <tr>
-                    <td>
-                        <input id="post_title" name="post_title" type="text" placeholder="제목" size="98">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="text" placeholder="카테고리" size="5" disabled>&emsp;
-                        <label><input id="post_kategorie"name="post_kategorie" type="radio" value="C" required> C </label>&emsp;
-                        <label><input id="post_kategorie"name="post_kategorie" type="radio" value="Java"> Java </label>&emsp;
-                        <label><input id="post_kategorie"name="post_kategorie" type="radio" value="Python"> Python </label>&emsp;
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <textarea id="post_content" name="post_content" placeholder="내용" cols="100" rows="20"></textarea>
-                    </td>
-                </tr>
-            </table>
-            <button class="btn btn-outline-primary" id="write_btn" type="submit ">글 쓰기</button>
-            <form action="/BackHome" method="POST">
-                <button class="btn btn-outline-secondary" id="write_btn" type="submit">글 목록</button>
+<div class="html_body">
+    <div class="container">
+        <div class="col-sm-7">
+            <form action="/uploadPost" method="POST">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>
+                            <input id="post_title" name="post_title" type="text" placeholder="제목" size="98">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" placeholder="카테고리" size="5" disabled>&emsp;
+                            <label><input id="post_kategorie"name="post_kategorie" type="radio" value="C" required> C </label>&emsp;
+                            <label><input id="post_kategorie"name="post_kategorie" type="radio" value="Java"> Java </label>&emsp;
+                            <label><input id="post_kategorie"name="post_kategorie" type="radio" value="Python"> Python </label>&emsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea id="post_content" name="post_content" placeholder="내용" cols="100" rows="20"></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <div class="horizontal">
+                    <button class="btn btn-outline-primary" id="write_btn" type="submit">글 쓰기</button>
+                    <a href="/BackHome" class="btn btn-outline-secondary">글 목록</a>
+                </div>
             </form>
-        </form>
+        
+            <!-- <form action="/BackHome" method="POST">
+                <button class="btn btn-outline-secondary" type="submit">글 목록</button>
+            </form> -->
+        </div>
     </div>
 </div>
 </center>
