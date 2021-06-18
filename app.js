@@ -419,7 +419,13 @@ app.post('/write_advice', async (req, res) => {
 app.post('/read_advice', (req, res) => {
     var search_number = req.body.post_no;
     var line = req.body.line;
-    var make_table_string = "<tr><td>ID</td><td>Advice</td></tr>";
+    var make_table_string = "<table class='table'><thead>" +
+                                "<tr>" +
+                                    "<th scope='col' col width='20%'>ID</th>" +
+                                    "<th scope='col' col width='80%'>Advice</th>" +
+                                "</tr>" +
+                            "</thead>" +
+                            "<tbody>";
 
     Post.findOne({ post_no : search_number })
         .exec( (err, post) =>{
@@ -428,15 +434,17 @@ app.post('/read_advice', (req, res) => {
             for (var i = 0 ; i < post.code_advice.length ; i++) {
                 if (post.code_advice[i].content_line == line){
                     make_table_string = make_table_string + "<tr>" +
-                                                            "<td>" + 
-                                                                post.code_advice[i].user_id
-                                                          + "</td>"+
-                                                            "<td>" + 
-                                                                post.code_advice[i].advice
-                                                          + "</td>"+
+                                                                "<td>" + 
+                                                                    post.code_advice[i].user_id
+                                                              + "</td>"+
+                                                                "<td>" + 
+                                                                    post.code_advice[i].advice
+                                                              + "</td>"+
                                                             "</tr>"
                 }
             }
+
+            make_table_string = make_table_string + "</tbody></table>"
 
             res.send(make_table_string)
 

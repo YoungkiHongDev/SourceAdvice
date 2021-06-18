@@ -95,6 +95,7 @@ a {
     align-items:center;
     background-color:#ffffff;
     justify-content:center;
+    padding-top: 20px;
   }
 
   .popup-body{
@@ -103,7 +104,9 @@ a {
   }
   .body-content{
     width:100%;
-    padding:30px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 10px;
   }
   .body-titlebox{
     text-align:center;
