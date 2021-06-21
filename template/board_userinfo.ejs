@@ -1,3 +1,8 @@
+<style>
+    ul {
+        justify-content: center;
+    }
+</style>
 <center>
     <div class="userinfo_home">
         <div class="userinfo_head">
@@ -37,7 +42,60 @@
             </form>
         </table>
         <div class="userinfo_posts">
-            게시한 글
+            <div class="row justify-content-center"">
+                    <table class="table" border="1">
+                        <thead>
+                            <colgroup>
+                            <tr class="table-primary">
+                                <th scope="col" col width="10%">카테고리</th>
+                                <th scope="col" col width="20%">제목</th>
+                                <th scope="col" col width="10%">작성자</th>
+                                <th scope="col" col width="20%">게시일</th>
+                                <th scope="col" col width="10%">훈수</th>
+                            </tr>
+                            </colgroup>
+                        </thead>
+                        <tbody>
+                        <%
+                            page_num = posts.length
+                            if(page_num > 5)
+                                view_post = 5
+                            else
+                                view_post = page_num
+                        %>
+                        <% for( let i = 0; i < view_post; i++){%>
+                        <tr>
+                            <th><%= posts[i].post_kategorie%></th>
+                            <th scope="row"><a href="/read/<%=posts[i].post_no%>"><%= posts[i].post_title %></a></th>
+                            <th><%= posts[i].user_id%></th>
+                            <th><%= posts[i].date%></th>
+                            <th><%= posts[i].code_advice.length %></th>
+                        </tr>
+                        <%}%>
+                        </tbody>
+                    </table>
+                    <%
+                        if (limit_page > 10)
+                            limit_page = 10
+                    %>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                          <li class="page-item">
+                            <a class="page-link" href="/page/<%= 1 %>" aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                            </a>
+                          </li>
+                          <% for(var j = 0; j < limit_page; j++){ %>
+                          <li class="page-item"><a class="page-link" href="/page/<%= j + 1 %>"><%= j + 1 %></a></li>
+                          <% } %>
+                          <li class="page-item">
+                            <a class="page-link" href="/page/<%= j %>" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                            </a>
+                          </li>
+                        </ul>
+                    </nav>
+            </div>
         </div>
     </div>
 </center>

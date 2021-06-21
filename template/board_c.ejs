@@ -42,7 +42,7 @@
                             <th scope="row"><a href="/read/<%=posts[i].post_no%>"><%= posts[i].post_title %></a></th>
                             <th><%= posts[i].user_id%></th>
                             <th><%= posts[i].date%></th>
-                            <th>0</th>
+                            <th><%= posts[i].code_advice.length %></th>
                         </tr>
                     <%}%>
                 <%}%>

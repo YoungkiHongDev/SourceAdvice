@@ -92,13 +92,11 @@ app.get('/', async (req, res) => {
         if (page_state == 2) {
             var post = await Post.find({}).exec();
             var selected_post
-
             for(let j = 0; j < post.length; j++){
                 if(post[j].post_no == idx){
                     selected_post = post[j];
                 }
             }
-
             res.render('main', {
                 id : req.session.user_id,
                 post : selected_post,
@@ -108,10 +106,22 @@ app.get('/', async (req, res) => {
         // MyPage
         else if (page_state == 6){
             var user = await User.findOne({ "user_id" : req.session.user_id })
+            
+            posts = await Post.find({"user_id" : user.user_id}).sort({post_no: -1})
+
+            if ((posts.length % 5) == 0) {
+                limit_page = parseInt(posts.length / 5);
+                max_page = parseInt(posts.length / 5);
+            } else {
+                limit_page = parseInt((posts.length / 5) + 1);
+                max_page = parseInt((posts.length / 5) + 1);
+            }
             res.render('main', {
-                id : req.session.user_id,
-                user : user,
-                page_state : page_state,
+                id            : req.session.user_id,
+                user          : user,
+                posts         : posts,
+                page_state    : page_state,
+                limit_page    : limit_page,
             })
         } 
         // 그 외
@@ -153,24 +163,41 @@ app.get('/page/:page', async (req,res,next) => {
     if(page == 999)
         page = max_page
 
-    console.log(page)
     if(page_state == 0){
         sub_posts = await Post.find({})
                               .sort({post_no: -1})
                               .skip((page - 1) * 10)
     }
+    else if(page_state == 6){
+        sub_posts = await Post.find({"user_id" : req.session.user_id})
+                              .sort({post_no: -1})
+                              .skip((page - 1) * 5)
+    }
     else{
-        sub_posts = await Post.find({post_kategorie : page_kategorie})
+        sub_posts = await Post.find({"post_kategorie" : page_kategorie})
                               .sort({post_no: -1})
                               .skip((page - 1) * 10)
     }
 
-    res.render('main', {
-        id          : req.session.user_id,
-        posts       : sub_posts,
-        page_state  : page_state,    //페이지 상태
-        limit_page    : limit_page,
-    });
+    if (page_state == 6){
+        var user = await User.findOne({ "user_id" : req.session.user_id })
+        res.render('main', {
+            id            : req.session.user_id,
+            user          : user,
+            posts         : sub_posts,
+            page_state    : page_state,    //페이지 상태
+            limit_page    : limit_page,
+        });
+    }
+    else{
+        res.render('main', {
+            id          : req.session.user_id,
+            posts       : sub_posts,
+            page_state  : page_state,    //페이지 상태
+            limit_page    : limit_page,
+        });
+    }
+
 });
 
 //회원가입
