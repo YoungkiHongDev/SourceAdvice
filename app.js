@@ -103,8 +103,12 @@ app.get('/', async (req, res) => {
                 post : selected_post,
                 page_state : page_state,
             })
-        }
-        else{
+        } else if (page_state == 6){
+            res.render('main', {
+                id : req.session.user_id,
+                page_state : page_state,
+            })
+        } else{
             // 페이지 리스트
             if(page_state == 0){
                 posts = await Post.find({})
@@ -383,6 +387,12 @@ app.get('/board_java', (req, res) => {
 app.get('/board_python', (req, res) => {
     page_state = 5;
     page_kategorie = "Python"
+    res.redirect('/');
+});
+
+//MyPage 메뉴 클릭 시
+app.get('/board_userinfo', (req, res) => {
+    page_state = 6;
     res.redirect('/');
 });
 

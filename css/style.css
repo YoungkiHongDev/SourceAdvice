@@ -143,3 +143,13 @@ a {
     color:#ffffff;
     cursor:pointer;
   }
+
+
+  .userinfo_home {
+    font-family:"Helvetica";
+    padding-bottom: 60px;
+    width: 600px;
+    height: 600px;
+    border: 1px solid red;
+    border-radius: 10px;
+  }
