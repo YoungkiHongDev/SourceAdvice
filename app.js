@@ -211,21 +211,21 @@ app.post('/register', (req, res) => {
     var uname = req.body.name;
     var uemail = req.body.email;
     var uaddress = req.body.address;
+    var result;
 
     User.findOne({ "user_id": uid }, (err, user) => {
         if (err) return res.json(err);
         if (!user) {
             User.create({ "user_id": uid, "password": upwd, "name": uname, "email": uemail, "address": uaddress }, (err) => {
                 if (err) return res.json(err);
-                console.log('Success');
-                res.redirect('/');
+                res.render('registerResult', {
+                    result: true
+                });
             })
         } else {
-            console.log('user id duplicate');
-            res.send(`
-                <a href="/">Back</a>
-                <h1>User id duplicate</h1>
-            `);
+            res.render('registerResult', {
+                result: false
+            });
         }
     })
 });
