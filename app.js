@@ -420,6 +420,22 @@ app.post('/edit_password', async (req, res) => {
     }
 })
 
+//유저 정보 업데이트
+app.post('/user_update', (req, res) => {
+    var id = req.session.user_id;
+    var name = req.body.name;
+    var email = req.body.email;
+    var address = req.body.address;
+
+    User.update({ "user_id": id },
+        {$set: { name:name, email:email, address:address}}, {multi:true},
+        (err, user) => {
+        if (err) return res.json(err);
+        console.log('Success');
+        res.redirect('/');
+    })
+});
+
 // 훈수 추가
 app.post('/write_advice', async (req, res) => {
     var input_user_id = req.session.user_id;

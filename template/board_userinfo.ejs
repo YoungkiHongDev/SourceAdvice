@@ -3,36 +3,39 @@
         <div class="userinfo_head">
             <%= user.name %>'s Info
         </div>
-        <form action="/edit_password" method="POST">
         <table>
-            <tr class="userinfo_item">
-                <th style="width: 200px;padding-left: 50px;">ID</th>
-                <td style="width: 700px;"> : <%= user.user_id %></td>
-            </tr>
-            <tr class="userinfo_item">
-                <th style="padding-left: 50px;">비밀번호 변경</th>
-                <td><input type="password" class="form-control" style="width: 300px;" id="editPW_first" name="editPW_first"></td>
-            </tr>
-            <tr class="userinfo_item">
-                <th style="padding-left: 50px;">비밀번호 확인</th>
-                <td style="text-align: left;"><input type="password" class="form-control" placeholder="Password" style="width: 300px;float: left;" id="editPW_second" name="editPW_second">
-                    <input type="submit" class="btn btn-warning" style="float: left;margin-left: 10px;" value="비밀번호 변경"></td>
-            </tr>
-            <tr class="userinfo_item">
-                <th style="padding-left: 50px;">Name</th>
-                <td> : <%= user.name %></td>
-            </tr>
-            <tr class="userinfo_item">
-                <th style="padding-left: 50px;">Address</th>
-                <td> : <%= user.address %></td>
-            </tr>
-            <tr class="userinfo_item">
-                <th style="padding-left: 50px;">E-Mail</th>
-                <td> : <%= user.email %></td>
-            </tr>
+            <form action="/edit_password" method="POST"></form>
+                <tr class="userinfo_item">
+                    <th style="width: 200px;padding-left: 50px;">ID</th>
+                    <td style="width: 700px;"> : <%= user.user_id %></td>
+                </tr>
+                <tr class="userinfo_item">
+                    <th style="padding-left: 50px;">비밀번호 변경</th>
+                    <td><input type="password" class="form-control" style="width: 300px;" id="editPW_first" name="editPW_first"></td>
+                </tr>
+                <tr class="userinfo_item">
+                    <th style="padding-left: 50px;">비밀번호 확인</th>
+                    <td style="text-align: left;"><input type="password" class="form-control" placeholder="Password" style="width: 300px;float: left;" id="editPW_second" name="editPW_second">
+                        <input type="submit" class="btn btn-warning" style="float: left;margin-left: 10px;" value="비밀번호 변경"></td>
+                </tr>
+            </form>
+
+            <form action="/user_update" method="POST">
+                <tr class="userinfo_item">
+                    <th style="padding-left: 50px;">Name</th>
+                    <td><input id="name" class="form-control" name="name" style="width: 300px;" type="text" placeholder="<%= user.name %>"></td>
+                </tr>
+                <tr class="userinfo_item">
+                    <th style="padding-left: 50px;">Address</th>
+                    <td><input id="address" class="form-control" name="address" style="width: 300px;" type="text" placeholder="<%= user.address %>"></td>
+                </tr>
+                <tr class="userinfo_item">
+                    <th style="padding-left: 50px;">E-Mail</th>
+                    <td style="text-align: left;"><input id="email" class="form-control" name="email" style="width: 300px; float: left;" type="text" placeholder="<%= user.email %>">
+                        <button class="btn btn-primary" type="submit" style="float: left;margin-left: 10px;">회원정보 수정</button></td>
+                </tr>
+            </form>
         </table>
-        </form>
-        
         <div class="userinfo_posts">
             게시한 글
         </div>
