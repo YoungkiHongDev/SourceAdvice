@@ -10,9 +10,9 @@ html, body {
   position: relative;
   padding-bottom: 60px; /* footer height */
 }
-table {
-    table-layout:fixed;
-    word-break:break-all;
+
+.table {
+  table-layout:fixed;
 }
 
 .horizontal {

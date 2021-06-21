@@ -114,8 +114,8 @@
             <% for(let i = 0; i < post.post_content.length; i++){ %>
                 <tr onmouseover="this.style.background='#FFE4E1'" onmouseout="this.style.backgroundColor='#FFFFFF'">
                     <td style="display: none;"><%= i %></td>
-                    <td scope='col' col width='70%'><pre><%= post.post_content[i] %></pre></td>
-                    <td scope='col' col width='30%'>
+                    <td scope='col' col width='70%' class="content_td"><pre><%= post.post_content[i] %></pre></td>
+                    <td scope='col' col width='30%' align="center" class="content_td">
                         <div class="btn-group" role="group" aria-label="Basic example" style="display:none;">
                             <button id="<%= 'modal-open'+i %>" type="button" class="btn btn-info">Advice 보기</button>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
