@@ -14,8 +14,11 @@
         <div class="wrapper fadeInDown">
             <div id="formContent">
                 <h1>
-                    your ID
-                    <%= Findid %>
+                    <% if(!Findid) {%>
+                        Can Not Find ID
+                    <%} else {%>
+                        Your ID <%= Findid %>
+                    <%}%>
                 </h1>
 
                 <form action="/BackHome" method="POST">
