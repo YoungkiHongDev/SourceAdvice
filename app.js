@@ -12,6 +12,8 @@ mongoose.connect('mongodb://localhost:27017/hunsu');
 const db = mongoose.connection;
 const autoIncrement = require('mongoose-auto-increment');
 
+
+
 // DB 커넥트 성공 여부
 db.once('err', () => {
     console.log(err);
@@ -60,6 +62,8 @@ PostSchema.plugin(autoIncrement.plugin,{
 const Post = mongoose.model('posts', PostSchema);
 
 
+
+
 //이것저것 설정
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -81,7 +85,7 @@ var posts;
 var max_page = 0;
 
 
-// 메인 페이지 page
+// 메인 페이지
 app.get('/', async (req, res) => {
     if (req.session.logined) {
         // Post 보기
@@ -152,7 +156,7 @@ app.get('/', async (req, res) => {
     }
 });
 
-// 페이징 post
+// 페이징
 app.get('/page/:page', async (req,res,next) => {
     var page = req.params.page;
     var sub_posts
@@ -200,7 +204,7 @@ app.get('/page/:page', async (req,res,next) => {
 
 });
 
-//회원가입 register
+//회원가입
 app.post('/register', (req, res) => {
     var uid = req.body.user_id;
     var upwd = req.body.password;
@@ -226,7 +230,7 @@ app.post('/register', (req, res) => {
     })
 });
 
-//아이디 찾기 find_idpw
+//아이디 찾기
 app.post('/findIDRst', (req, res) => {
     var uname = req.body.name;
     var uemail = req.body.email;
@@ -245,7 +249,7 @@ app.post('/findIDRst', (req, res) => {
     })
 })
 
-//비밀번호 찾기 find_idpw
+//비밀번호 찾기
 app.post('/findPasswordRst', (req, res) => {
     var uid = req.body.user_id;
     var uname = req.body.name;
@@ -266,7 +270,7 @@ app.post('/findPasswordRst', (req, res) => {
     })
 })
 
-//게시글 작성 post
+//게시글 작성
 app.post('/uploadPost', (req, res) => {
     var user_id = req.session.user_id;
     var post_title = req.body.post_title;
@@ -289,7 +293,7 @@ app.post('/uploadPost', (req, res) => {
     });
 });
 
-// 게시글 삭제 post
+// 게시글 삭제
 app.get('/deletePost/:delete_post_no', (req, res) => {
     var delete_post_no = req.params.delete_post_no;
     console.log(delete_post_no)
@@ -304,46 +308,46 @@ app.get('/deletePost/:delete_post_no', (req, res) => {
     });
 })
 
-//로고 클릭시 메인 화면 move
+//로고 클릭시 메인 화면
 app.get('/BackHome', (req, res) => {
     page_state = 0;
     res.redirect('/');
 })
 
-//뒤로가기 버튼 클릭 move
-app.post('/BackHome', (req, res) => {
-    page_state = 0;
-    res.redirect('/');
-})
-
-//로그아웃 버튼 클릭 logout
+//로그아웃 버튼 클릭
 app.post('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/');
 });
 
-//회원가입 버튼 클릭 register
+//회원가입 버튼 클릭
 app.post('/regist', (req, res) => {
     res.render('register', );
 })
 
-//아이디 찾기 버튼 클릭 find_idpw
+//아이디 찾기 버튼 클릭
 app.post('/findID', (req, res) => {
     res.render('findID');
 })
 
-//비밀번호 찾기 버튼 클릭 find_idpw
+//비밀번호 찾기 버튼 클릭
 app.post('/findpwd', (req, res) => {
     res.render('findPassword');
 })
 
-//게시글 작성 버튼 클릭 post
+//뒤로가기 버튼 클릭
+app.post('/BackHome', (req, res) => {
+    page_state = 0;
+    res.redirect('/');
+})
+
+//게시글 작성 버튼 클릭
 app.post('/writePost_btn', (req, res) => {
     page_state = 1;
     res.redirect('/');
 })
 
-//게시글을 보기위해 제목을 클릭했을 때 post
+//게시글을 보기위해 제목을 클릭했을 때
 app.get('/read/:post_no',(req,res,next) => {
     page_state = 2;
     idx = req.params.post_no;
@@ -351,7 +355,7 @@ app.get('/read/:post_no',(req,res,next) => {
     res.redirect('/');
 });
 
-//로그인 버튼 클릭 login
+//로그인 버튼 클릭
 app.post('/', (req, res) => {
     let id = req.body.user_id;
     let pwd = req.body.password;
@@ -363,7 +367,7 @@ app.listen(3000, () => {
     console.log('listening 3000port');
 });
 
-//로그인 시 동작될 함수 login
+//로그인 시 동작될 함수
 function duplicate(req, res, uid, upwd) {
     User.findOne({ "user_id": uid }, (err, user) => {
         if (err) return res.json(err);
@@ -393,37 +397,39 @@ function duplicate(req, res, uid, upwd) {
     });
 }
 
-//C 메뉴 클릭 시 move
+//C 메뉴 클릭 시
 app.get('/board_c', (req, res) => {
     page_state = 3;
     page_kategorie = "C";
     res.redirect('/');
 });
 
-//Java 메뉴 클릭 시 move
+//Java 메뉴 클릭 시
 app.get('/board_java', (req, res) => {
     page_state = 4;
     page_kategorie = "Java"
     res.redirect('/');
 });
 
-//Python 메뉴 클릭 시 move
+//Python 메뉴 클릭 시
 app.get('/board_python', (req, res) => {
     page_state = 5;
     page_kategorie = "Python"
     res.redirect('/');
 });
 
-//MyPage 메뉴 클릭 시 move
+//MyPage 메뉴 클릭 시
 app.get('/board_userinfo', (req, res) => {
     page_state = 6;
     res.redirect('/');
 });
 
-// 비밀번호 변경 update
+// 비밀번호 변경
 app.post('/edit_password', async (req, res) => {
     var first = req.body.editPW_first;
     var second = req.body.editPW_second;
+
+    console.log(first + "/" + second)
 
     if (first == second) {
         User.updateOne({"user_id" : req.session.user_id}, {"password" : first}, (err, user) =>{
@@ -435,7 +441,7 @@ app.post('/edit_password', async (req, res) => {
     }
 })
 
-//유저 정보 업데이트 update
+//유저 정보 업데이트
 app.post('/user_update', (req, res) => {
     var id = req.session.user_id;
     var name = req.body.name;
@@ -451,7 +457,7 @@ app.post('/user_update', (req, res) => {
     })
 });
 
-// 훈수 추가 advice
+// 훈수 추가
 app.post('/write_advice', async (req, res) => {
     var input_user_id = req.session.user_id;
     var input_advice = req.body.advice;
@@ -476,7 +482,7 @@ app.post('/write_advice', async (req, res) => {
     });
 });
 
-// 훈수 보기 advice
+// 훈수 보기
 app.post('/read_advice', (req, res) => {
     var search_number = req.body.post_no;
     var line = req.body.line;
