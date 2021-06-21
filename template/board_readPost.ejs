@@ -168,18 +168,23 @@
             view_code.text(selected_code)
         });
         $('#advice_submit').click(function() {
-            $.ajax({
-                url:'/write_advice',
-                type:'POST',
-                data:{
-                    advice  : $('#advice_textarea').val(),
-                    line    : clicked_button.getAttribute('data-bs-whatever'),
-                    post_no : $('#post_no').val()
-                },
-                success : function(){
-                    $("#advice_Dialog").modal('hide');
-                }
-            })
+            if ($('#advice_textarea').val() == ""){
+                $("#advice_Dialog").modal('hide');
+            }
+            else{
+                $.ajax({
+                    url:'/write_advice',
+                    type:'POST',
+                    data:{
+                        advice  : $('#advice_textarea').val(),
+                        line    : clicked_button.getAttribute('data-bs-whatever'),
+                        post_no : $('#post_no').val()
+                    },
+                    success : function(){
+                        $("#advice_Dialog").modal('hide');
+                    }
+                })
+            }
         });
         // Advice 보기
         $(".btn-info").click(function(){
