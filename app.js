@@ -201,11 +201,9 @@ app.post('/findIDRst', (req, res) => {
                 Findid: user.user_id
             });
         } else {
-            console.log('can not find ID');
-            res.send(`
-                <a href="/">Back</a>
-                <h1>can not find id</h1>
-            `);
+            res.render('findIDResult', {
+                Findid: null
+            });
         }
     })
 })
@@ -224,11 +222,9 @@ app.post('/findPasswordRst', (req, res) => {
                 passwordid: user.password
             });
         } else {
-            console.log('can not find ID');
-            res.send(`
-                <a href="/">Back</a>
-                <h1>can not find id</h1>
-            `);
+            res.render('findPasswordResult', {
+                passwordid: null
+            });
         }
     })
 })
