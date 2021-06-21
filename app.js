@@ -88,6 +88,7 @@ var max_page = 0;
 // 메인 페이지
 app.get('/', async (req, res) => {
     if (req.session.logined) {
+        // 게시물 보기
         if (page_state == 2) {
             var post = await Post.find({}).exec();
             var selected_post
@@ -103,12 +104,18 @@ app.get('/', async (req, res) => {
                 post : selected_post,
                 page_state : page_state,
             })
-        } else if (page_state == 6){
+        } 
+        // MyPage
+        else if (page_state == 6){
+            var user = await User.findOne({ "user_id" : req.session.user_id })
             res.render('main', {
                 id : req.session.user_id,
+                user : user,
                 page_state : page_state,
             })
-        } else{
+        } 
+        // 그 외
+        else{
             // 페이지 리스트
             if(page_state == 0){
                 posts = await Post.find({})

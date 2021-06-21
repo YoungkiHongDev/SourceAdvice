@@ -1,11 +1,16 @@
 <center>
     <div class="userinfo_home">
-        User Info
-        <div class="userinfo_item">
-            ID
+        <div class="userinfo_head">
+            <%= user.name %>'s Info
         </div>
         <div class="userinfo_item">
-            비밀번호 변경
+            ID : <%= user.user_id %>
+        </div>
+        <div class="userinfo_pw">
+            비밀번호 변경 : <input type="password">
+        </div>
+        <div class="userinfo_pw">
+            비밀번호 확인 : <input type="password"> <button>비밀번호 변경</button>
         </div>
         <div class="userinfo_item">
             NickName
@@ -16,8 +21,8 @@
         <div class="userinfo_item">
             E-mail
         </div>
-        <div class="userinfo_item">
-            추천 수
+        <div class="userinfo_posts">
+            게시한 글
         </div>
     </div>
 </center>
