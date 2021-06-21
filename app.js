@@ -88,7 +88,7 @@ var max_page = 0;
 // 메인 페이지
 app.get('/', async (req, res) => {
     if (req.session.logined) {
-        // 게시물 보기
+        // Post 보기
         if (page_state == 2) {
             var post = await Post.find({}).exec();
             var selected_post
@@ -116,6 +116,7 @@ app.get('/', async (req, res) => {
                 limit_page = parseInt((posts.length / 5) + 1);
                 max_page = parseInt((posts.length / 5) + 1);
             }
+
             res.render('main', {
                 id            : req.session.user_id,
                 user          : user,
@@ -163,16 +164,19 @@ app.get('/page/:page', async (req,res,next) => {
     if(page == 999)
         page = max_page
 
+    // All 리스트
     if(page_state == 0){
         sub_posts = await Post.find({})
                               .sort({post_no: -1})
                               .skip((page - 1) * 10)
     }
+    //MyPage
     else if(page_state == 6){
         sub_posts = await Post.find({"user_id" : req.session.user_id})
                               .sort({post_no: -1})
                               .skip((page - 1) * 5)
     }
+    //C, JAVA, Python
     else{
         sub_posts = await Post.find({"post_kategorie" : page_kategorie})
                               .sort({post_no: -1})
@@ -185,7 +189,7 @@ app.get('/page/:page', async (req,res,next) => {
             id            : req.session.user_id,
             user          : user,
             posts         : sub_posts,
-            page_state    : page_state,    //페이지 상태
+            page_state    : page_state,
             limit_page    : limit_page,
         });
     }
@@ -193,7 +197,7 @@ app.get('/page/:page', async (req,res,next) => {
         res.render('main', {
             id          : req.session.user_id,
             posts       : sub_posts,
-            page_state  : page_state,    //페이지 상태
+            page_state  : page_state,
             limit_page    : limit_page,
         });
     }
@@ -231,7 +235,6 @@ app.post('/findIDRst', (req, res) => {
     var uname = req.body.name;
     var uemail = req.body.email;
     var uaddress = req.body.address;
-    var uid;
     User.findOne({ "name": uname, "email": uemail, "address": uaddress }, (err, user) => {
         if (err) return res.json(err);
         if (user) {
@@ -266,13 +269,6 @@ app.post('/findPasswordRst', (req, res) => {
         }
     })
 })
-
-// db.posts.find().sort( {post_no : -1 } ).limit(1)
-// db.posts.insertOne({ post_no: 1, user_id : "admin", post_title : "test1", post_kategorie : "C", post_content : "test", date : "2021-05-09 00:00:00" })
-// db.posts.insertOne({ post_no: 2, user_id : "admin", post_title : "test2", post_kategorie : "Java", post_content : "test", date : "2021-05-09 00:00:00" })
-// db.posts.insertOne({ post_no: 3, user_id : "admin", post_title : "test3", post_kategorie : "Python", post_content : "test", date : "2021-05-09 00:00:00" })
-// db.posts.insertOne({ post_no: 4, user_id : "admin", post_title : "test4", post_kategorie : "C", post_content : "test", date : "2021-05-09 00:00:00" })
-// db.posts.insertOne({ post_no: 5, user_id : "admin", post_title : "test5", post_kategorie : "C", post_content : "test", date : "2021-05-09 00:00:00" })
 
 //게시글 작성
 app.post('/uploadPost', (req, res) => {
@@ -366,15 +362,13 @@ app.post('/', (req, res) => {
     duplicate(req, res, id, pwd);
 });
 
-
+// 서버 실행
 app.listen(3000, () => {
     console.log('listening 3000port');
 });
 
 //로그인 시 동작될 함수
 function duplicate(req, res, uid, upwd) {
-    let parseUrl = url.parse(req.url);
-    let resource = parseUrl.pathname;
     User.findOne({ "user_id": uid }, (err, user) => {
         if (err) return res.json(err);
 
@@ -434,8 +428,6 @@ app.get('/board_userinfo', (req, res) => {
 app.post('/edit_password', async (req, res) => {
     var first = req.body.editPW_first;
     var second = req.body.editPW_second;
-
-    console.log(first + "/" + second)
 
     if (first == second) {
         User.updateOne({"user_id" : req.session.user_id}, {"password" : first}, (err, user) =>{
