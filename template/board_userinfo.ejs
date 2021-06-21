@@ -3,24 +3,36 @@
         <div class="userinfo_head">
             <%= user.name %>'s Info
         </div>
-        <div class="userinfo_item">
-            ID : <%= user.user_id %>
-        </div>
-        <div class="userinfo_pw">
-            비밀번호 변경 : <input type="password">
-        </div>
-        <div class="userinfo_pw">
-            비밀번호 확인 : <input type="password"> <button>비밀번호 변경</button>
-        </div>
-        <div class="userinfo_item">
-            NickName
-        </div>
-        <div class="userinfo_item">
-            Address
-        </div>
-        <div class="userinfo_item">
-            E-mail
-        </div>
+        <form action="/edit_password" method="POST">
+        <table>
+            <tr class="userinfo_item">
+                <th style="width: 200px;padding-left: 50px;">ID</th>
+                <td style="width: 700px;"> : <%= user.user_id %></td>
+            </tr>
+            <tr class="userinfo_item">
+                <th style="padding-left: 50px;">비밀번호 변경</th>
+                <td><input type="password" class="form-control" style="width: 300px;" id="editPW_first" name="editPW_first"></td>
+            </tr>
+            <tr class="userinfo_item">
+                <th style="padding-left: 50px;">비밀번호 확인</th>
+                <td style="text-align: left;"><input type="password" class="form-control" placeholder="Password" style="width: 300px;float: left;" id="editPW_second" name="editPW_second">
+                    <input type="submit" class="btn btn-warning" style="float: left;margin-left: 10px;" value="비밀번호 변경"></td>
+            </tr>
+            <tr class="userinfo_item">
+                <th style="padding-left: 50px;">Name</th>
+                <td> : <%= user.name %></td>
+            </tr>
+            <tr class="userinfo_item">
+                <th style="padding-left: 50px;">Address</th>
+                <td> : <%= user.address %></td>
+            </tr>
+            <tr class="userinfo_item">
+                <th style="padding-left: 50px;">E-Mail</th>
+                <td> : <%= user.email %></td>
+            </tr>
+        </table>
+        </form>
+        
         <div class="userinfo_posts">
             게시한 글
         </div>

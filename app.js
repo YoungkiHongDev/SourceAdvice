@@ -403,6 +403,23 @@ app.get('/board_userinfo', (req, res) => {
     res.redirect('/');
 });
 
+// 비밀번호 변경
+app.post('/edit_password', async (req, res) => {
+    var first = req.body.editPW_first;
+    var second = req.body.editPW_second;
+
+    console.log(first + "/" + second)
+
+    if (first == second) {
+        User.updateOne({"user_id" : req.session.user_id}, {"password" : first}, (err, user) =>{
+            if (err) return res.json(err);
+
+            console.log('update success');
+            res.redirect('/');
+        })
+    }
+})
+
 // 훈수 추가
 app.post('/write_advice', async (req, res) => {
     var input_user_id = req.session.user_id;
