@@ -3,9 +3,8 @@
         font-family:"Helvetica";
         padding-bottom: 60px;
         width: 900px;
-        height: 85%;
+        height: 80%;
         border-radius: 10px;
-        padding-bottom: 60px;
         position: relative;
     }
     .userinfo_head {
@@ -40,7 +39,7 @@
             <form action="/edit_password" method="POST">
                 <tr class="userinfo_item">
                     <th style="width: 200px;padding-left: 50px;">ID</th>
-                    <td style="width: 700px;"> : <%= user.user_id %></td>
+                    <td style="width: 700px;" align="left"><%= user.user_id %></td>
                 </tr>
                 <tr class="userinfo_item">
                     <th style="padding-left: 50px;">비밀번호 변경</th>

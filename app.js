@@ -4,10 +4,7 @@ const app = express();
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const bodyParser = require('body-parser');
-const url = require('url');
 const moment = require('moment');
-const { post } = require('jquery');
-const { allowedNodeEnvironmentFlags } = require('process');
 mongoose.connect('mongodb://localhost:27017/hunsu');
 const db = mongoose.connection;
 const autoIncrement = require('mongoose-auto-increment');
@@ -143,7 +140,7 @@ app.get('/', async (req, res) => {
                 posts = await Post.find({})
                                       .sort({post_no: -1})
             } else{
-                posts = await Post.find({post_kategorie : page_kategorie})
+                posts = await Post.find({"post_kategorie" : page_kategorie})
                                       .sort({post_no: -1})
             }
 
@@ -308,7 +305,7 @@ app.post('/uploadPost', (req, res) => {
 app.get('/deletePost/:delete_post_no', (req, res) => {
     var delete_post_no = req.params.delete_post_no;
     console.log(delete_post_no)
-    Post.deleteOne({ post_no : delete_post_no }, (err, result) => {
+    Post.deleteOne({ "post_no" : delete_post_no }, (err, result) => {
         if (err) {
           console.log(err)
         } else {
@@ -475,7 +472,7 @@ app.post('/write_advice', async (req, res) => {
     var input_line = req.body.line * 1;
     var search_number = req.body.post_no;
 
-    Post.findOne({ post_no : search_number })
+    Post.findOne({ "post_no" : search_number })
         .exec( (err, post) =>{
             if (err) return res.json(err);
 
@@ -499,7 +496,7 @@ app.post('/read_advice', (req, res) => {
     var line = req.body.line;
     var make_table_string = "";
 
-    Post.findOne({ post_no : search_number })
+    Post.findOne({ "post_no" : search_number })
         .exec( (err, post) =>{
             if (err) return res.json(err);
 
