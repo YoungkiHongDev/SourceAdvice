@@ -38,6 +38,17 @@
         justify-content: center;
     }
 </style>
+
+<% if(password_update == 1) { %>
+    <script type="text/javascript">
+        alert("비밀번호 변경 완료")
+    </script>
+<% } %>
+<% if(userinfo_update == 1) { %>
+    <script type="text/javascript">
+        alert("사용자 정보 변경 완료")
+    </script>
+<% } %>
 <center>
     <div class="container">
         <div class="userinfo_home">

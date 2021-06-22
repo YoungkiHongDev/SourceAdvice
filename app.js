@@ -80,6 +80,8 @@ var limit_page = 0;
 var page_kategorie = "";
 var posts;
 var max_page = 0;
+var password_update = 0
+var userinfo_update = 0
 
 
 // 메인 페이지
@@ -126,14 +128,17 @@ app.get('/', async (req, res) => {
                 limit_page = parseInt((posts.length / 5) + 1);
                 max_page = parseInt((posts.length / 5) + 1);
             }
-
             res.render('main', {
-                id            : req.session.user_id,
-                user          : user,
-                posts         : posts,
-                page_state    : page_state,
-                limit_page    : limit_page,
+                id                  : req.session.user_id,
+                user                : user,
+                posts               : posts,
+                page_state          : page_state,
+                limit_page          : limit_page,
+                password_update     : password_update,
+                userinfo_update     : userinfo_update
             })
+            userinfo_update = 0
+            password_update = 0
         } 
         // 그 외
         else{
@@ -449,13 +454,12 @@ app.post('/edit_password', async (req, res) => {
     var first = req.body.editPW_first;
     var second = req.body.editPW_second;
 
-    console.log(first + "/" + second)
-
     if (first == second) {
         User.updateOne({"user_id" : req.session.user_id}, {"password" : first}, (err, user) =>{
             if (err) return res.json(err);
 
-            console.log('update success');
+            console.log('password update success');
+            password_update = 1
             res.redirect('/');
         })
     }
@@ -474,7 +478,8 @@ app.post('/user_update', (req, res) => {
         {$set: { name:name, email:email, address:address}}, {multi:true},
         (err, user) => {
         if (err) return res.json(err);
-        console.log('Success');
+        console.log('userinfo update Success');
+        userinfo_update = 1
         res.redirect('/');
     })
 });
