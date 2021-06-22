@@ -38,6 +38,7 @@
                         view_post = page_num
                 %>
                 <% for( let i = 0; i < view_post; i++){%>
+                    <!-- 카테고리가 Java인 게시글만 보여주기 -->
                     <% if(posts[i].post_kategorie == "Java") {%>
                         <tr>
                             <th><%= posts[i].post_kategorie%>

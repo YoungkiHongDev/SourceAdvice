@@ -51,7 +51,7 @@ const PostSchema = mongoose.Schema({
     post_content        : { type: Array },
     date                : { type: String },
     code_advice         : { type: [AdviceSchema] },
-    viewcnt             : { type: Number } //조회수
+    viewcnt             : { type: Number } ///조회수 필드
 });
 autoIncrement.initialize(db);
 PostSchema.plugin(autoIncrement.plugin,{ 
@@ -100,7 +100,9 @@ app.get('/', async (req, res) => {
                 }
             }
 
-            //조회수 증가
+            ///게시글 클릭 시 조회수 증가
+            ///게시글을 클릭하여 페이지상태값이 2가 될 경우
+            ///updateOne문, post_no를 통해 조회수값 viewcnt를 찾아서 +1
             Post.updateOne({ "post_no":post_no }, 
                 {$set: { viewcnt:viewcnt+1 }},
                 (err, post) => {
@@ -229,11 +231,13 @@ app.post('/register', (req, res) => {
         if (!user) {
             User.create({ "user_id": uid, "password": upwd, "name": uname, "email": uemail, "address": uaddress }, (err) => {
                 if (err) return res.json(err);
+                ///회원가입 성공 시 result는 true
                 res.render('registerResult', {
                     result: true
                 });
             })
         } else {
+            ///회원가입 실패 시 result는 false
             res.render('registerResult', {
                 result: false
             });
@@ -249,10 +253,12 @@ app.post('/findIDRst', (req, res) => {
     User.findOne({ "name": uname, "email": uemail, "address": uaddress }, (err, user) => {
         if (err) return res.json(err);
         if (user) {
+            ///아이디 찾기 성공 시 Findid에 찾은 아이디 저장
             res.render('findIDResult', {
                 Findid: user.user_id
             });
         } else {
+            ///아이디 찾기 실패 시 Findid에 null 저장
             res.render('findIDResult', {
                 Findid: null
             });
@@ -270,10 +276,12 @@ app.post('/findPasswordRst', (req, res) => {
     User.findOne({ "user_id": uid, "name": uname, "email": uemail, "address": uaddress }, (err, user) => {
         if (err) return res.json(err);
         if (user) {
+            ///비밀번호 찾기 성공 시 passwordid에 찾은 비밀번호 저장
             res.render('findPasswordResult', {
                 passwordid: user.password
             });
         } else {
+            ///비밀번호 찾기 실패 시 passwordid에 null 저장
             res.render('findPasswordResult', {
                 passwordid: null
             });
@@ -319,7 +327,7 @@ app.get('/deletePost/:delete_post_no', (req, res) => {
     });
 })
 
-//로고 클릭시 메인 화면
+//로고 및 목록 클릭시 홈 화면으로 가기
 app.get('/BackHome', (req, res) => {
     page_state = 0;
     res.redirect('/');
@@ -409,6 +417,7 @@ function duplicate(req, res, uid, upwd) {
 }
 
 //C 메뉴 클릭 시
+///페이지 상태값 3
 app.get('/board_c', (req, res) => {
     page_state = 3;
     page_kategorie = "C";
@@ -416,6 +425,7 @@ app.get('/board_c', (req, res) => {
 });
 
 //Java 메뉴 클릭 시
+///페이지 상태값 4
 app.get('/board_java', (req, res) => {
     page_state = 4;
     page_kategorie = "Java"
@@ -423,6 +433,7 @@ app.get('/board_java', (req, res) => {
 });
 
 //Python 메뉴 클릭 시
+///페이지 상태값 5
 app.get('/board_python', (req, res) => {
     page_state = 5;
     page_kategorie = "Python"
@@ -430,6 +441,7 @@ app.get('/board_python', (req, res) => {
 });
 
 //MyPage 메뉴 클릭 시
+///페이지 상태값 6
 app.get('/board_userinfo', (req, res) => {
     page_state = 6;
     res.redirect('/');
@@ -452,13 +464,15 @@ app.post('/edit_password', async (req, res) => {
     }
 })
 
-//유저 정보 업데이트
+///MyPage에서 회원정보 수정 버튼 클릭 시
+///유저의 이름, 이메일, 주소 정보 업데이트
 app.post('/user_update', (req, res) => {
-    var id = req.session.user_id;
-    var name = req.body.name;
-    var email = req.body.email;
-    var address = req.body.address;
+    var id = req.session.user_id;   ///현재 접속중인 유저 아이디
+    var name = req.body.name;       ///유저의 이름
+    var email = req.body.email;     ///유저의 이메일
+    var address = req.body.address; ///유저의 주소
 
+    ///update문, 유저 아이디로 이름, 이메일, 주소를 찾아서 업데이트
     User.update({ "user_id": id },
         {$set: { name:name, email:email, address:address}}, {multi:true},
         (err, user) => {
