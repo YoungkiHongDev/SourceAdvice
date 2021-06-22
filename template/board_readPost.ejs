@@ -63,7 +63,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" id="advice_submit">Advice 등록</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            <button type="button" class="btn btn-secondary" id="advice_close">닫기</button>
         </div>
       </div>
     </div>
@@ -187,10 +187,15 @@
                     },
                     success : function(){
                         $("#advice_Dialog").modal('hide');
+                        $('#advice_textarea').val("")
                     }
                 })
             }
         });
+        $('#advice_close').click(function() {
+            $("#advice_Dialog").modal('hide');
+            $('#advice_textarea').val("")
+        })
         // Advice 보기
         $(".btn-info").click(function(){
             var checkBtn = $(this);

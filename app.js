@@ -201,11 +201,13 @@ app.get('/page/:page', async (req,res,next) => {
     if (page_state == 6){
         var user = await User.findOne({ "user_id" : req.session.user_id })
         res.render('main', {
-            id            : req.session.user_id,
-            user          : user,
-            posts         : sub_posts,
-            page_state    : page_state,
-            limit_page    : limit_page,
+            id                  : req.session.user_id,
+            user                : user,
+            posts               : sub_posts,
+            page_state          : page_state,
+            limit_page          : limit_page,
+            password_update     : password_update,
+            userinfo_update     : userinfo_update
         });
     }
     else{
@@ -543,12 +545,19 @@ app.post('/read_advice', (req, res) => {
     var search_number = req.body.post_no;
     var line = req.body.line;
     var make_table_string = "";
+    var isEmpty_Advice = 0
 
     Post.findOne({ "post_no" : search_number })
         .exec( (err, post) =>{
             if (err) return res.json(err);
 
-            if ( post.code_advice.length == 0 ) {
+            for ( let j = 0; j < post.code_advice.length; j++){
+                if(post.code_advice[j].content_line == line){
+                    isEmpty_Advice = 1;
+                }
+            }
+
+            if ( isEmpty_Advice == 0 ) {
                 make_table_string = "해당 Line에는 Advice가 없습니다!"
             }
             else {
