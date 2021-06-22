@@ -50,7 +50,8 @@ const PostSchema = mongoose.Schema({
     post_kategorie      : { type: String },
     post_content        : { type: Array },
     date                : { type: String },
-    code_advice         : { type: [AdviceSchema] }
+    code_advice         : { type: [AdviceSchema] },
+    viewcnt             : { type: Number } //조회수
 });
 autoIncrement.initialize(db);
 PostSchema.plugin(autoIncrement.plugin,{ 
@@ -60,7 +61,6 @@ PostSchema.plugin(autoIncrement.plugin,{
     increment : 1 // 증가 
 });
 const Post = mongoose.model('posts', PostSchema);
-
 
 
 
@@ -94,9 +94,20 @@ app.get('/', async (req, res) => {
             var selected_post
             for(let j = 0; j < post.length; j++){
                 if(post[j].post_no == idx){
+                    post_no = post[j].post_no;
+                    viewcnt = post[j].viewcnt;
                     selected_post = post[j];
                 }
             }
+
+            //조회수 증가
+            Post.updateOne({ "post_no":post_no }, 
+                {$set: { viewcnt:viewcnt+1 }},
+                (err, post) => {
+                if (err) return res.json(err);
+                console.log('Success');
+            })
+
             res.render('main', {
                 id : req.session.user_id,
                 post : selected_post,
@@ -284,7 +295,7 @@ app.post('/uploadPost', (req, res) => {
         .exec( (err, post) =>{
             if (err) return res.json(err);
             Post.create({ "user_id": user_id, "post_title": post_title, "post_kategorie": post_kategorie,
-                        "post_content": content, "date": date }, (err) => {
+                        "post_content": content, "date": date, "viewcnt": 0 }, (err) => {
                 if (err) return res.json(err);
                 console.log('Success');
                 page_state = 0;

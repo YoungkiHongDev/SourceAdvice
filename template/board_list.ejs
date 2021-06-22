@@ -20,9 +20,10 @@
                     <colgroup>
                     <tr class="table-primary">
                         <th scope="col" col width="10%">카테고리</th>
-                        <th scope="col" col width="20%">제목</th>
+                        <th scope="col" col width="15%">제목</th>
                         <th scope="col" col width="10%">작성자</th>
-                        <th scope="col" col width="20%">게시일</th>
+                        <th scope="col" col width="15%">게시일</th>
+                        <th scope="col" col width="10%">조회수</th>
                         <th scope="col" col width="10%">Advice</th>
                     </tr>
                     </colgroup>
@@ -41,6 +42,7 @@
                     <th scope="row"><a href="/read/<%=posts[i].post_no%>"><%= posts[i].post_title %></a></th>
                     <th><%= posts[i].user_id%></th>
                     <th><%= posts[i].date%></th>
+                    <th><%= posts[i].viewcnt%></th>
                     <th><%= posts[i].code_advice.length %></th>
                 </tr>
                 <%}%>
