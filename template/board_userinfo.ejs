@@ -76,15 +76,15 @@
                 <form action="/user_update" method="POST">
                     <tr class="userinfo_item">
                         <th style="padding-left: 50px;">Name</th>
-                        <td><input id="name" class="form-control" name="name" style="width: 300px;" type="text" placeholder="<%= user.name %>"></td>
+                        <td><input id="name" class="form-control" name="name" style="width: 300px;" type="text" value="<%= user.name %>"></td>
                     </tr>
                     <tr class="userinfo_item">
                         <th style="padding-left: 50px;">Address</th>
-                        <td><input id="address" class="form-control" name="address" style="width: 300px;" type="text" placeholder="<%= user.address %>"></td>
+                        <td><input id="address" class="form-control" name="address" style="width: 300px;" type="text" value="<%= user.address %>"></td>
                     </tr>
                     <tr class="userinfo_item">
                         <th style="padding-left: 50px;">E-Mail</th>
-                        <td style="text-align: left;"><input id="email" class="form-control" name="email" style="width: 300px; float: left;" type="text" placeholder="<%= user.email %>">
+                        <td style="text-align: left;"><input id="email" class="form-control" name="email" style="width: 300px; float: left;" type="text" value="<%= user.email %>">
                             <button class="btn btn-primary" type="submit" style="float: left;margin-left: 10px;">회원정보 수정</button></td>
                     </tr>
                 </form>

@@ -277,19 +277,48 @@ app.post('/findPasswordRst', (req, res) => {
 
     User.findOne({ "user_id": uid, "name": uname, "email": uemail, "address": uaddress }, (err, user) => {
         if (err) return res.json(err);
+        ///회원가입한 유저가 맞을 경우
         if (user) {
-            ///비밀번호 찾기 성공 시 passwordid에 찾은 비밀번호 저장
             res.render('findPasswordResult', {
-                passwordid: user.password
+                result: uid
             });
+        ///회원가입한 유저가 아닐 경우
         } else {
-            ///비밀번호 찾기 실패 시 passwordid에 null 저장
             res.render('findPasswordResult', {
-                passwordid: null
+                result: null
             });
         }
     })
 })
+
+///비밀번호 찾기 후 새로운 비밀번호 만들기
+app.post("/newPassword", (req, res) => {
+    var uid = id;
+    var pass1 = req.body.password1;
+    var pass2 = req.body.password2;
+
+    ///새로운 비밀번호 2칸 다 같을 경우
+    if(pass1 == pass2) {
+        ///updateOne으로 id를 찾아서 password 업데이트
+        //result값에 true를 주고 newPasswordResult 페이지 불러오기
+        User.updateOne({ "user_id":uid }, 
+                {$set: { password:pass1 }},
+                (err, user) => {
+                if (err) return res.json(err);
+                console.log('Success');
+                res.render('newPasswordResult', {
+                    result: true
+                });
+        })
+    }
+    ///새로운 비밀번호 2칸이 서로 다를 경우
+    else {
+        ///result값에 false를 주고 newPasswordResult 페이지 불러오기
+        res.render('newPasswordResult', {
+            result: false
+        });
+    }
+});
 
 //게시글 작성
 app.post('/uploadPost', (req, res) => {
