@@ -106,9 +106,9 @@ app.get('/', async (req, res) => {
                 }
             }
 
-            ///게시글 클릭 시 조회수 증가
-            ///게시글을 클릭하여 페이지상태값이 2가 될 경우
-            ///updateOne문, post_no를 통해 조회수값 viewcnt를 찾아서 +1
+            // 게시글 클릭 시 조회수 증가
+            // 게시글을 클릭하여 페이지상태값이 2가 될 경우
+            // updateOne문, post_no를 통해 조회수값 viewcnt를 찾아서 +1
             Post.updateOne({ "post_no" : selected_post.post_no }, 
                 {$set: { "viewcnt" : selected_post.viewcnt + 1 }},
                 (err, post) => {

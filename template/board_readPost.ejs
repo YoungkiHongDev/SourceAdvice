@@ -1,3 +1,23 @@
+<!-- ------------게시글 삭제 버튼 클릭 시 나타나는 모달 창---------- -->
+<div class="modal fade" id="delete_Dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">게시글 삭제</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                게시글을 삭제하시겠습니까?
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-outline-secondary" href="/deletePost/<%=post.post_no%>">예</a>
+                <button class="btn btn-outline-secondary" data-bs-dismiss="modal">아니오</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- ------------Advice 보기 클릭 시 나타나는 팝업창-------------- -->
 <div class="container">
     <div class="popup-wrap" id="popup">
@@ -23,24 +43,6 @@
     </div>
 </div>
 
-<!-- ------------게시글 삭제 버튼 클릭 시 나타나는 모달 창---------- -->
-<div class="modal fade" id="delete_Dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">게시글 삭제</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                게시글을 삭제하시겠습니까?
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-outline-secondary" href="/deletePost/<%=post.post_no%>">예</a>
-                <button class="btn btn-outline-secondary" data-bs-dismiss="modal">아니오</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- -------------Advice 추가 버튼 클릭 시 나타나는 모달 창---------- -->
 <div class="modal fade" id="advice_Dialog" tabindex="-1" aria-labelledby="AdviceModalLabel" aria-hidden="true">
