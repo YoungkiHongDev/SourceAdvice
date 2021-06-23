@@ -6,11 +6,13 @@
                 <table class="table table-bordered">
                     <tr>
                         <td>
+                            <!-- 제목 -->
                             <input id="post_title" name="post_title" type="text" placeholder="제목" size="98">
                         </td>
                     </tr>
                     <tr>
                         <td>
+                            <!-- 카테고리 -->
                             <input type="text" placeholder="카테고리" size="5" disabled>&emsp;
                             <!-- required 옵션으로 필수값 체크 -->
                             <label><input id="post_kategorie"name="post_kategorie" type="radio" value="C" required> C </label>&emsp;
@@ -20,12 +22,15 @@
                     </tr>
                     <tr>
                         <td>
+                            <!-- 소스코드 -->
                             <textarea id="post_content" name="post_content" placeholder="내용" cols="100" rows="20"></textarea>
                         </td>
                     </tr>
                 </table>
                 <div class="horizontal">
+                    <!-- 등록 -->
                     <button class="btn btn-outline-primary" id="write_btn" type="submit">글 쓰기</button>
+                    <!-- 글 등록을 하지 않고 글 목록으로 -->
                     <a href="/BackHome" class="btn btn-outline-secondary">글 목록</a>
                 </div>
             </form>

@@ -9,6 +9,7 @@
                 <div class="body-content">
                     <div class="body-contentbox">
                         <div class="popup-tablebox">
+                            <!-- 여기에 내용이 보여짐 -->
                             <div id="advice_table">
                             </div>
                         </div>
@@ -44,39 +45,41 @@
 <!-- -------------Advice 추가 버튼 클릭 시 나타나는 모달 창---------- -->
 <div class="modal fade" id="advice_Dialog" tabindex="-1" aria-labelledby="AdviceModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="AdviceModalLabel">Advice 추가</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label class="col-form-label">Code:</label>
-              <div id="view_code"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="AdviceModalLabel">Advice 추가</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="mb-3">
-              <label for="message-text" class="col-form-label">Advice:</label>
-              <textarea class="form-control" id="advice_textarea"></textarea>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="col-form-label">Code:</label>
+                        <div id="view_code"></div>  <!--코드가 들어갈 부분 -->
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Advice:</label>
+                        <textarea class="form-control" id="advice_textarea"></textarea> <!-- Advice를 입력할 textarea -->
+                    </div>
+                </form>
             </div>
-          </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="advice_submit">Advice 등록</button>
+                <button type="button" class="btn btn-secondary" id="advice_close">닫기</button>
+            </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="advice_submit">Advice 등록</button>
-            <button type="button" class="btn btn-secondary" id="advice_close">닫기</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
 <!-- ---------------페이지 시작--------------- -->
 <div class="html_body">
     <div class="menu_group" align="right">
+        <!-- 게시글의 작성자와 게시글을 보고있는 유저가 동일할 경우 게시글 삭제 버튼 생성 -->
         <% if( id == post.user_id ) { %>
         <div class="menu_item">
             <button class="btn btn-outline-secondary" id="show_Modal" data-bs-toggle="modal" data-bs-target="#delete_Dialog">게시글 삭제</button>
         </div>
         <% } %>
+        <!-- 글 목록으로 이동 -->
         <div class="menu_item">
             <form action="/BackHome" method="POST">
                 <button class="btn btn-outline-secondary" type="submit">글 목록으로</button>
@@ -84,6 +87,7 @@
         </div>
     </div>
 <center>
+    <!-- post_no을 저장해놓은 input 객체이며 보이지 않는다 -->
     <input type="text" style="display: none;" value="<%= post.post_no %>" id="post_no">
     <div class="row justify-content-center">
         <div class="col-sm-8">
@@ -115,11 +119,15 @@
             </table>
             <table class="table" id="content_table">
             <div id="line">
-            <!-- ----------게시글 줄당 출력---------- -->
+            <!-- ----------소스코드를 Line단위로 출력---------- -->
             <% for(let i = 0; i < post.post_content.length; i++){ %>
+                <!-- 마우스 over 시 해당 tr의 색이 바뀜 -->
                 <tr onmouseover="this.style.background='#FFE4E1'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+                    <!-- 코드의 라인 -->
                     <td style="display: none;"><%= i %></td>
+                    <!-- 소스코드 -->
                     <td scope='col' col width='70%' class="content_td"><pre><%= post.post_content[i] %></pre></td>
+                    <!-- Advice 보기 버튼과 추가 버튼이며 기본적으로 보이지 않고 마우스를 tr에 가져다 대면 보여진다. -->
                     <td scope='col' col width='30%' align="center" class="content_td">
                         <div class="btn-group" role="group" aria-label="Basic example" style="display:none;">
                             <button id="<%= 'modal-open'+i %>" type="button" class="btn btn-info">Advice 보기</button>
@@ -130,7 +138,7 @@
                     </td>
                 </tr>
             <%}%>
-            <!-- ---------게시글 줄당 출력 끝--------- -->
+            <!-- ---------소스코드 출력 끝--------- -->
             </div>
             </table>
             
@@ -139,9 +147,8 @@
 </center>
 </div>
 
-
-<!-- 마우스를 대면 하이라이트 효과 -->
 <script>
+    // 마우스를 tr에 over시키면 Advice 보기와 추가 버튼이 보이고 사라지는 동작을 위한 함수
     $(document).ready(function() {
         $("#content_table tr").hover(
             function() { 
@@ -156,64 +163,80 @@
 </script>
 
 <!-- Advice 입출력 관련 코드 -->
-<!-- 빈 내용일 시 저장안하고 닫기만 하는 기능 추가 예정 -->
 <script>
-    //현재 어드바이스를 작성하는 line
+    // 현재 어드바이스를 작성하는 line
     var selected_line
+    // Advice를 작성할 객체 불러오기
     var advice_Dialog = document.getElementById('advice_Dialog')
     var clicked_button
     
     $(document).ready(function() {
         // Advice 등록
         advice_Dialog.addEventListener('show.bs.modal', function (event) {
+            // 클릭한 버튼의 객체를 변수로 저장
             clicked_button = event.relatedTarget
+            // 객체에 존재하는 소스코드 정보를 추출
+            // 버튼 객체의 data-bs-content 에는 해당 Line의 소스코드가 저장된다.
             var selected_code = clicked_button.getAttribute('data-bs-content')
             var view_code = $('#view_code')
-
+            // 팝업창에 코드를 출력한다.
             view_code.text(selected_code)
         });
+        // Advice 등록 버튼 클릭 이벤트
         $('#advice_submit').click(function() {
+            // textarea에 내용이 존재하지 않을 경우 닫기만 한다.
             if ($('#advice_textarea').val() == ""){
                 $("#advice_Dialog").modal('hide');
             }
+            // textarea에 내용이 존재할 경우
             else{
                 $.ajax({
                     url:'/write_advice',
                     type:'POST',
                     data:{
-                        advice  : $('#advice_textarea').val(),
-                        line    : clicked_button.getAttribute('data-bs-whatever'),
-                        post_no : $('#post_no').val()
+                        advice  : $('#advice_textarea').val(),                          // Advice 내용
+                        line    : clicked_button.getAttribute('data-bs-whatever'),      // Advice를 추가할 Line
+                        post_no : $('#post_no').val()                                   // post_no
                     },
+                    // 성공 시
                     success : function(){
+                        // 팝업을 닫고 textarea 초기화
                         $("#advice_Dialog").modal('hide');
                         $('#advice_textarea').val("")
                     }
                 })
             }
         });
+        // Advice를 추가하는 팝업창에서 닫기를 눌렀을 경우
         $('#advice_close').click(function() {
             $("#advice_Dialog").modal('hide');
             $('#advice_textarea').val("")
         })
-        // Advice 보기
+
+        // Advice 보기를 클릭 시 이벤트
         $(".btn-info").click(function(){
+            // 현재 클릭한 버튼객체 저장
             var checkBtn = $(this);
+            // 해당 라인 추출
             selected_line = checkBtn.parent().parent().parent().children('td').eq(0).text()
+            // Advice를 불러오기 위한 과정
             $.ajax({
                     url:'/read_advice',
                     type:'POST',
                     data:{
-                        line    : selected_line,
-                        post_no : $('#post_no').val()
+                        line    : selected_line,        // 선택한 Line
+                        post_no : $('#post_no').val()   // post_no
                     },
+                    // 성공 시
                     success:function(args){
+                        // Advice를 출력하고 팝업창 출력
                         $('#advice_table').html(args)
                         $("#popup").css('display','flex').hide().fadeIn();
                     }
             })
             
         });
+        // 닫기 버튼 클릭
         $("#close").click(function(){
             $("#popup").fadeOut();
         });

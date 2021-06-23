@@ -40,19 +40,23 @@
 </style>
 
 <% if(password_update == 1) { %>
+    <!-- 비밀번호 변경 성공 -->
     <script type="text/javascript">
         alert("비밀번호 변경 완료")
     </script>
 <% } else if(password_update == 2) { %>
+    <!-- 비밀번호 변경 실패 -->
     <script type="text/javascript">
         alert("각 비밀번호가 다릅니다. 다시 시도해주세요.")
     </script>
 <% } %>
 <% if(userinfo_update == 1) { %>
+    <!-- 사용자 정보 변경 성공 -->
     <script type="text/javascript">
         alert("사용자 정보 변경 완료")
     </script>
 <% } %>
+
 <center>
     <div class="container">
         <div class="userinfo_home">
@@ -65,6 +69,7 @@
                         <th style="width: 200px;padding-left: 50px;">ID</th>
                         <td style="width: 700px;" align="left"><%= user.user_id %></td>
                     </tr>
+                    <!-- 비밀번호 변경 -->
                     <tr class="userinfo_item">
                         <th style="padding-left: 50px;">비밀번호 변경</th>
                         <td><input type="password" class="form-control" placeholder="Password" style="width: 300px;" id="editPW_first" name="editPW_first"></td>
@@ -93,6 +98,9 @@
                     </tr>
                 </form>
             </table>
+
+            <!-- 현재 로그인한 사용자가 작성한 게시물을 보여주기 위한 list이며, 구조는 다른 게시판과 같으며, 페이지당 보여주는 게시물 수만 다르다. -->
+            <!-- 설명 생략 -->
             <div class="userinfo_posts">
                 <div class="row justify-content-center"">
                         <table class="table" border="1">

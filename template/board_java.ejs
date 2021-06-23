@@ -13,6 +13,8 @@
         justify-content: center;
     }
 </style>
+
+<!-- Java 카테고리 -->
 <center>
     <div class="row justify-content-center"">
         <div class="col-sm-8">
@@ -30,6 +32,7 @@
                     </colgroup>
                 </thead>
                 <tbody>
+                <!-- 보여질 게시글의 개수. 최대 10개 -->
                 <%
                     page_num = posts.length
                     if(page_num > 10)
@@ -53,6 +56,7 @@
                 <%}%>
                 </tbody>
             </table>
+            <!-- 페이지 제한 -->
             <%
                 if (limit_page > 10)
                     limit_page = 10
@@ -60,6 +64,7 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item">
+                        <!-- 첫 페이지로 이동 -->
                         <a class="page-link" href="/page/<%= 1 %>" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -70,6 +75,7 @@
                     </li>
                     <% } %>
                     <li class="page-item">
+                        <!-- 마지막 페이지로 이동 -->
                         <a class="page-link" href="/page/99" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>

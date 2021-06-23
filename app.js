@@ -569,7 +569,7 @@ app.post('/write_advice', async (req, res) => {
 app.post('/read_advice', (req, res) => {
     var search_number = req.body.post_no;   // 현재 post_no
     var line = req.body.line;               // 클릭한 Line
-    var make_table_string = "";             // 보여줄 내용
+    var make_table_string = "";             // Advice 출력 변수
     var isEmpty_Advice = 0                  // Advice의 존재 여부 확인 변수
 
     Post.findOne({ "post_no" : search_number })

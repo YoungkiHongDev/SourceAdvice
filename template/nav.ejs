@@ -13,24 +13,30 @@
     <div class="container-fluid">
         <div class="navbar_logo">
             <i class="fab fa-accusoft"></i>
+            <!-- 프로젝트 로고이며 이 로고를 클릭해도 메인 화면으로 이동한다 -->
             <a class="navbar-brand" href="/BackHome">Source Advice</a>
         </div>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
+                    <!-- ALL List -->
                     <a class="nav-link" href="/BackHome">ALL</a>
                 </li>
                 <li class="nav-item">
+                    <!-- C List -->
                     <a class="nav-link" href="/board_c">C</a>
                 </li>
                 <li class="nav-item">
+                    <!-- Java List -->
                     <a class="nav-link" href="/board_java">Java</a>
                 </li>
                 <li class="nav-item">
+                    <!-- Python List -->
                     <a class="nav-link" href="/board_python">Python</a>
                 </li>
                 <li class="nav-item">
+                    <!-- MyPage -->
                     <a class="nav-link" href="/board_userinfo">MyPage</a>
                 </li>
             </ul>
@@ -39,6 +45,7 @@
     <!-- 현재 로그인한 유저의 id를 로그아웃 버튼 옆에 출력 -->
     <h5 style="margin-right:1%; color: white; text-align:center;">Welcome! <%= id %></h5>
     <form class="navbar_user" action="/logout" method="POST">
+        <!-- 로그아웃 버튼 -->
         <button class="btn btn-warning" type="submit" style="margin-right: 20px;">Logout</button>
     </form>
 </nav>
